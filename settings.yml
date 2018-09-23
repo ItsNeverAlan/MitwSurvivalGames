@@ -1,0 +1,3 @@
+minPlayer: 6
+serverName: "TW-01"
+broadCastCommand: "bungee broadcast sg-1"
