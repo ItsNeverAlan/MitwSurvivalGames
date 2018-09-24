@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,6 +12,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+
+import lombok.Getter;
 
 /**
  *
@@ -21,19 +24,19 @@ public class ScoreHelper {
 
 	public static HashMap<UUID, ScoreHelper> players = new HashMap<>();
 
-	public static boolean hasScore(Player player) {
+	public static boolean hasScore(final Player player) {
 		return players.containsKey(player.getUniqueId());
 	}
 
-	public static ScoreHelper createScore(Player player) {
+	public static ScoreHelper createScore(final Player player) {
 		return new ScoreHelper(player);
 	}
 
-	public static ScoreHelper getByPlayer(Player player) {
+	public static ScoreHelper getByPlayer(final Player player) {
 		return players.get(player.getUniqueId());
 	}
 
-	public static ScoreHelper removeScore(Player player) {
+	public static ScoreHelper removeScore(final Player player) {
 		return players.remove(player.getUniqueId());
 	}
 
@@ -41,15 +44,15 @@ public class ScoreHelper {
 	private final UUID uuid;
 
 	private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-	private Objective sidebar;
+	private final Objective sidebar;
 
-	private ScoreHelper(Player player) {
+	private ScoreHelper(final Player player) {
 		uuid = player.getUniqueId();
 		sidebar = scoreboard.registerNewObjective("sidebar", "dummy");
 		sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
 		// Create Teams
 		for (int i = 1; i <= 15; i++) {
-			Team team = scoreboard.registerNewTeam("SLOT_" + i);
+			final Team team = scoreboard.registerNewTeam("SLOT_" + i);
 			team.addEntry(genEntry(i));
 		}
 		player.setScoreboard(scoreboard);
@@ -61,27 +64,27 @@ public class ScoreHelper {
 		sidebar.setDisplayName(title.length() > 32 ? title.substring(0, 32) : title);
 	}
 
-	public void setSlot(int slot, String text) {
-		Team team = scoreboard.getTeam("SLOT_" + slot);
-		String entry = genEntry(slot);
+	public void setSlot(final int slot, String text) {
+		final Team team = scoreboard.getTeam("SLOT_" + slot);
+		final String entry = genEntry(slot);
 		if (!scoreboard.getEntries().contains(entry)) {
 			sidebar.getScore(entry).setScore(slot);
 		}
 
 		text = ChatColor.translateAlternateColorCodes('&', text);
-		String[] ts = this.splitStringLine(text);
-		team.setPrefix(ts[0]);
-		team.setSuffix(ts[1]);
+		final Entry ts = split(text);
+		team.setPrefix(ts.getLeft());
+		team.setSuffix(ts.getRight());
 	}
 
-	public void removeSlot(int slot) {
-		String entry = genEntry(slot);
+	public void removeSlot(final int slot) {
+		final String entry = genEntry(slot);
 		if (scoreboard.getEntries().contains(entry)) {
 			scoreboard.resetScores(entry);
 		}
 	}
 
-	public void setSlotsFromList(List<String> list) {
+	public void setSlotsFromList(final List<String> list) {
 		while (list.size() > 15) {
 			list.remove(list.size() - 1);
 		}
@@ -94,52 +97,38 @@ public class ScoreHelper {
 			}
 		}
 
-		for (String line : list) {
+		for (final String line : list) {
 			setSlot(slot, line);
 			slot--;
 		}
 	}
 
-	private String genEntry(int slot) {
+	private String genEntry(final int slot) {
 		return ChatColor.values()[slot].toString();
 	}
 
-	private String[] splitStringLine(String string) {
-
-		StringBuilder prefix = new StringBuilder(string.substring(0, string.length() >= 16 ? 16 : string.length()));
-		StringBuilder suffix = new StringBuilder(string.length() > 16 ? string.substring(16) : "");
-
-		if ((prefix.toString().length() > 1) && (prefix.charAt(prefix.length() - 1) == '¡±')) {
-			prefix.deleteCharAt(prefix.length() - 1);
-			suffix.insert(0, '¡±');
-		}
-
-		String last = "";
-
-		int i = 0;
-
-		while (i < prefix.toString().length()) {
-
-			char c = prefix.toString().charAt(i);
-
-			if (c == '¡±') {
-				if (i < prefix.toString().length() - 1) {
-					last = last + "¡±" + prefix.toString().charAt(i + 1);
-				}
+	public static Entry split(final String text) {
+		final Entry entry = new Entry();
+		if (text.length() <= 16) {
+			entry.left = text;
+			entry.right = "";
+		} else {
+			String prefix = text.substring(0, 16), suffix = "";
+			if (prefix.endsWith("\u00a7")) {
+				prefix = prefix.substring(0, prefix.length() - 1);
+				suffix = "\u00a7" + suffix;
 			}
-
-			++i;
+			suffix = StringUtils.left(ChatColor.getLastColors(prefix) + suffix + text.substring(16), 16);
+			entry.left = prefix;
+			entry.right = suffix;
 		}
+		return entry;
+	}
 
-		String s2 = "" + suffix;
+	public static class Entry {
 
-		if (prefix.length() > 14) {
-			s2 = !last.isEmpty() ? String.valueOf(last) + s2 : "¡±" + s2;
-		}
-
-		return new String[] { prefix.toString().length() > 16 ? prefix.toString().substring(0, 16) : prefix.toString(),
-
-				s2.toString().length() > 16 ? s2.toString().substring(0, 16) : s2.toString() };
+		@Getter
+		private String left = "", right = "";
 
 	}
 

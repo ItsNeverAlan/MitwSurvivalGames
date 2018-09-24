@@ -16,10 +16,12 @@ import mitw.survivalgames.manager.FileManager;
 import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.manager.PlayerManager;
 import mitw.survivalgames.manager.SgChestManager;
+import mitw.survivalgames.ratings.RatingManager;
 import mitw.survivalgames.scoreboard.BoardSetup;
 import mitw.survivalgames.utils.FastRandom;
 import mitw.survivalgames.utils.ItemBuilder;
 import mitw.survivalgames.utils.Utils;
+import mitw.survivalgames.utils.mysql.mysql.builder.hikari.HikariHandler;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 
 public class SurvivalGames extends JavaPlugin {
@@ -80,6 +82,7 @@ public class SurvivalGames extends JavaPlugin {
 	}
 
 	private void registerStaticClasses() {
+		new FileManager();
 		new Utils();
 		new ItemBuilder();
 
@@ -89,7 +92,9 @@ public class SurvivalGames extends JavaPlugin {
 		new SgChestManager();
 		new GameManager();
 		new PlayerManager();
-		new FileManager();
+
+		HikariHandler.init();
+		new RatingManager();
 	}
 
 	private void registerEvents() {

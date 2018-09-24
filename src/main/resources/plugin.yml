@@ -1,6 +1,7 @@
-main: me.lulu.MitwSG.Main
+main: mitw.survivalgames.SurvivalGames
 name: MitwSG
 version: 1.2
+depend: [Mitw]
 commands:
   sg:
   

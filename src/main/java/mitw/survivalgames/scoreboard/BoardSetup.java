@@ -5,11 +5,10 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
+import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
-import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.manager.ArenaManager;
 import mitw.survivalgames.manager.PlayerManager;
 import mitw.survivalgames.tasks.DeathMatchTask;
@@ -23,32 +22,29 @@ public class BoardSetup {
 	public static String winnerName;
 
 	public static void setup() {
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					updateScore(p);
-				}
-			}
-		}.runTaskTimerAsynchronously(SurvivalGames.getInstance(), 2l, 2l);
+		Bukkit.getScheduler().runTaskTimerAsynchronously(SurvivalGames.getInstance(), BoardSetup::updateAll, 20L, 2L);
 	}
 
-	public static void setTitile(String title) {
-		title = Utils.colored(title);
-		for (ScoreHelper s : new ArrayList<>(ScoreHelper.players.values()))
-			s.setTitle(title);
+	public static void setTitile(final String title) {
+		new ArrayList<>(ScoreHelper.players.values()).forEach(scoreHelper -> scoreHelper.setTitle(title));
 	}
 
-	public static void updateScore(Player p) {
+	public static void updateAll() {
+		try {
+			Bukkit.getOnlinePlayers().forEach(BoardSetup::updateScore);
+		} catch (final Exception e) {}
+	}
+
+	public static void updateScore(final Player p) {
 		if (ScoreHelper.hasScore(p)) {
-			ScoreHelper helper = ScoreHelper.getByPlayer(p);
-			List<String> setboardList = new ArrayList<>();
-			for (String s : getList()) {
+			final ScoreHelper helper = ScoreHelper.getByPlayer(p);
+			final List<String> setboardList = new ArrayList<>();
+			for (final String s : getList()) {
 				setboardList.add(var(p, s));
 			}
 			helper.setSlotsFromList(setboardList);
 		} else {
-			ScoreHelper helper = ScoreHelper.createScore(p);
+			final ScoreHelper helper = ScoreHelper.createScore(p);
 			helper.setTitle(Lang.Title);
 		}
 	}
@@ -71,7 +67,7 @@ public class BoardSetup {
 		return null;
 	}
 
-	public static String var(Player p, String s) {
+	public static String var(final Player p, final String s) {
 		switch (GameStatus.getState()) {
 		case WAITING:
 			return s.replaceAll("<players>", "" + Bukkit.getOnlinePlayers().size()).replaceAll("&", "¡±")
@@ -82,7 +78,6 @@ public class BoardSetup {
 		case GAMING:
 			return s.replaceAll("<players>", "" + PlayerManager.players.size()).replaceAll("&", "¡±")
 					.replaceAll("<time>", Utils.timeFormat(GameTask.timeLeft))
-					//.replaceAll("<kills>", Main.getGM().getData.get(p.getUniqueId()).getKills() + "")
 					.replaceAll("<max>", PlayerManager.max + "").replaceAll("<arena>", ArenaManager.usingArenaName + "")
 					.replaceAll("<kills>", String.valueOf(SurvivalGames.getPlayerManager().getKills(p))).replaceAll("<server>", "¡±b" + Lang.serverName);
 		case FINISH:

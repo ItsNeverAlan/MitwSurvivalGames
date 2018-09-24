@@ -10,9 +10,9 @@ import mitw.survivalgames.arena.Arena;
 import mitw.survivalgames.manager.ArenaManager;
 import mitw.survivalgames.utils.MenuBuilder;
 
-public class VoteMenu extends MenuBuilder {
+public class VoteGUI extends MenuBuilder {
 
-	public VoteMenu() {
+	public VoteGUI() {
 		super("&6投票地圖", 3);
 		int run = 0;
 		for (Arena a : ArenaManager.arenas) {
@@ -35,7 +35,7 @@ public class VoteMenu extends MenuBuilder {
 		else
 			ArenaManager.votes.put(p.getUniqueId(), SurvivalGames.getArenaManager().getArena(i.getItemMeta().getDisplayName()));
 		Lang.RandomMap = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&e隨緣&7(Random Map)");
-		new VoteMenu().o(p);
+		new VoteGUI().o(p);
 	}
 
 }

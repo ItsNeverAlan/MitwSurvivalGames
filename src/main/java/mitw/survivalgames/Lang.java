@@ -1,6 +1,7 @@
 package mitw.survivalgames;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -10,25 +11,25 @@ import mitw.survivalgames.utils.Utils;
 public class Lang {
 	public static Lang ins;
 	public static String prefix = Utils.colored("&7[&6&lMitw&f&lSG&7]&f ");
-	public static String Title = "&6&lMitw&f&lSG";
+	public static String Title = "&6&lMitw &7| &fSG";
 	public static String deathMatchTitle = "&c&lThe Final";
-	public static ArrayList<String> watingList = new ArrayList<>();
-	public static ArrayList<String> startingList = new ArrayList<>();
-	public static ArrayList<String> gamingList = new ArrayList<>();
-	public static ArrayList<String> finishList = new ArrayList<>();
-	public static ArrayList<String> dmStartList = new ArrayList<>();
-	public static ArrayList<String> dmList = new ArrayList<>();
+	public static List<String> watingList = new ArrayList<>();
+	public static List<String> startingList = new ArrayList<>();
+	public static List<String> gamingList = new ArrayList<>();
+	public static List<String> finishList = new ArrayList<>();
+	public static List<String> dmStartList = new ArrayList<>();
+	public static List<String> dmList = new ArrayList<>();
 	public static ItemStack specTp, playAnotherGame, returnToLobby, iVoteMap, RandomMap, arrowTrails;
 	public static String outArena;
 	public static String cantStart;
 	public static String needDeathMatch;
 	public static String lobbyCount, startCount, gameCount, deathMatchStartCount, allStrikeLightCount;
 	public static String youKills1, youGotKillByS1, s1Death;
-	public static String pplJoin, pplLeave;
+	public static String pplJoin, pplLeave, ratingAdded;
 	public static String gameStarted, allLightStart;
 	public static String serverName,bungeeBroadCastCmd;
-	public static ArrayList<String> victoryMsg = new ArrayList<>();
-	public static ArrayList<String> infoMessage = new ArrayList<>();
+	public static List<String> victoryMsg = new ArrayList<>();
+	public static List<String> infoMessage = new ArrayList<>();
 
 	public Lang() {
 		ins = this;
@@ -38,6 +39,7 @@ public class Lang {
 	}
 
 	public void setupString() {
+		ratingAdded = Utils.colored("&6積分 +");
 		outArena = Utils.colored(prefix + "&c&l你已經超出&f&l場地限制範圍!!&c&l請趕快回場地!!!");
 		cantStart = Utils.colored(prefix + "&c遊戲人數不足造成無法開始");
 		needDeathMatch = Utils.colored(prefix + "&c&l由於人數剩下&f&l4人!&c&l因此加快遊戲速度!&f&l2分鐘後便要&c&l死亡之戰!");
@@ -106,11 +108,14 @@ public class Lang {
 		finishList.add("&6&lMitw.Rip");
 		finishList.add("&7&m---------------------------");
 
-		victoryMsg.add("§6§m--------------------------");
+		victoryMsg.add("§7§m--------------------------");
 		victoryMsg.add("");
-		victoryMsg.add(Utils.colored("§f§l恭喜&6&l <player> &f&l獲得勝利"));
+		victoryMsg.add("  §e§l遊戲結束");
+		victoryMsg.add("§f恭喜 §6§l<player> §f獲得勝利");
 		victoryMsg.add("");
-		victoryMsg.add("§6§m--------------------------");
+		victoryMsg.add("§f勝利者擊殺數:§b <playerKills>");
+		victoryMsg.add("");
+		victoryMsg.add("§7§m--------------------------");
 
 		dmStartList.add("&7&m---------------------------");
 		dmStartList.add("&f存活玩家: &c<players>");

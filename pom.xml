@@ -9,7 +9,7 @@
 	<description>Survival Games</description>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>MS950</project.build.sourceEncoding>
 	</properties>
 
 	<build>
@@ -58,6 +58,20 @@
             <scope>provided</scope>
         </dependency>
         
+        <dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>net.development.mitw</groupId>
+            <artifactId>Mitw</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Mitw-1.0.0.jar</systemPath>
+        </dependency>
+		
         <dependency>
             <groupId>top.potl.spigot</groupId>
             <artifactId>nspigot</artifactId>

@@ -25,21 +25,22 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 
+import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.arena.Arena;
-import mitw.survivalgames.guis.VoteMenu;
-import mitw.survivalgames.GameStatus;
+import mitw.survivalgames.guis.VoteGUI;
 import mitw.survivalgames.manager.ArenaManager;
 import mitw.survivalgames.manager.PlayerManager;
+import mitw.survivalgames.ratings.PlayerCache;
 import mitw.survivalgames.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerListener implements Listener {
 
 	@EventHandler
-	public void onDeath(PlayerDeathEvent e) {
-		Player p = e.getEntity();
+	public void onDeath(final PlayerDeathEvent e) {
+		final Player p = e.getEntity();
 		if (!SurvivalGames.getPlayerManager().isGameingPlayer(p))
 			return;
 		SurvivalGames.getPlayerManager().setSpec(p);
@@ -47,32 +48,39 @@ public class PlayerListener implements Listener {
 		PlayerManager.players.remove(p.getUniqueId());
 		p.getWorld().strikeLightningEffect(p.getLocation());
 		if (p.getKiller() != null) {
-			Player k = p.getKiller();
-			DecimalFormat df = new DecimalFormat("##.0");
-			String kHeart = df.format(k.getHealth() / 2D);
+			final Player k = p.getKiller();
+			final DecimalFormat df = new DecimalFormat("##.0");
+			final String kHeart = df.format(k.getHealth() / 2D);
 			SurvivalGames.getPlayerManager().addKills(k);
 			p.sendMessage(Lang.youGotKillByS1.replaceAll("<player>", k.getName()).replaceAll("<heart>", kHeart));
 			k.sendMessage(Lang.youKills1.replaceAll("<player>", p.getName()));
+
+			final int ratingAdded = SurvivalGames.getRandom().nextInt(5, 15);
+			final PlayerCache killerCache = SurvivalGames.getPlayerManager().getCache(k.getUniqueId());
+			killerCache.setRating(killerCache.getRating() + ratingAdded);
+
+			k.sendMessage(Lang.ratingAdded + ratingAdded);
 		}
 		e.setDeathMessage(Lang.s1Death.replaceAll("<player>", p.getName()).replaceAll("<size>", String.valueOf(PlayerManager.players.size())));
 		SurvivalGames.getGameManager().checkWin();
 	}
 
 	@EventHandler
-	public void onDamage(EntityDamageEvent e) {
+	public void onDamage(final EntityDamageEvent e) {
 		if (!(e.getEntity() instanceof Player))
 			return;
-		Player p = (Player) e.getEntity();
-		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(p))
+		final Player p = (Player) e.getEntity();
+		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
 			e.setCancelled(true);
+		}
 
 	}
 
 	@EventHandler
-	public void onDamageByEntity(EntityDamageByEntityEvent e) {
+	public void onDamageByEntity(final EntityDamageByEntityEvent e) {
 		if (!(e.getDamager() instanceof Player))
 			return;
-		Player damager = (Player) e.getDamager();
+		final Player damager = (Player) e.getDamager();
 		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(damager)) {
 			e.setCancelled(true);
 			return;
@@ -80,27 +88,29 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPickup(PlayerPickupItemEvent e) {
-		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer()))
+	public void onPickup(final PlayerPickupItemEvent e) {
+		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer())) {
 			e.setCancelled(true);
+		}
 
 	}
 
 	@EventHandler
-	public void onDrop(PlayerDropItemEvent e) {
-		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer()))
+	public void onDrop(final PlayerDropItemEvent e) {
+		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer())) {
 			e.setCancelled(true);
+		}
 	}
 
 	@EventHandler
-	public void onBlockBreak(BlockBreakEvent e) {
-		Block b = e.getBlock();
+	public void onBlockBreak(final BlockBreakEvent e) {
+		final Block b = e.getBlock();
 		Arena a;
 		if (e.getPlayer().getItemInHand().getType().equals(Material.BLAZE_ROD)) {
 			e.setCancelled(true);
-			Location l = e.getBlock().getLocation();
-			Player p = e.getPlayer();
-			UUID u = p.getUniqueId();
+			final Location l = e.getBlock().getLocation();
+			final Player p = e.getPlayer();
+			final UUID u = p.getUniqueId();
 			a = ArenaManager.editors.get(u);
 			if (!ArenaManager.editors.get(u).tir2Chests.contains(l)) {
 				SurvivalGames.getSgChestManager().setTir2(l, ArenaManager.editors.get(u));
@@ -113,9 +123,9 @@ public class PlayerListener implements Listener {
 		}
 		if (e.getPlayer().getItemInHand().getType().equals(Material.GHAST_TEAR)) {
 			e.setCancelled(true);
-			Location l = e.getBlock().getLocation();
-			Player p = e.getPlayer();
-			UUID u = p.getUniqueId();
+			final Location l = e.getBlock().getLocation();
+			final Player p = e.getPlayer();
+			final UUID u = p.getUniqueId();
 			a = ArenaManager.editors.get(u);
 			if (!ArenaManager.editors.get(u).centerChests.contains(l)) {
 				SurvivalGames.getSgChestManager().setCenter(l, a);
@@ -128,16 +138,17 @@ public class PlayerListener implements Listener {
 		}
 
 		if ((!GameStatus.isGaming(true) || !ArenaManager.canBreak.contains(b.getType())
-				|| !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer())) && !SurvivalGames.getPlayerManager().isBuilder(e.getPlayer()))
+				|| !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer())) && !SurvivalGames.getPlayerManager().isBuilder(e.getPlayer())) {
 			e.setCancelled(true);
+		}
 	}
 
 	@EventHandler
-	public void onInteract(PlayerInteractEvent e) {
-		Player p = e.getPlayer();
-		Action a = e.getAction();
+	public void onInteract(final PlayerInteractEvent e) {
+		final Player p = e.getPlayer();
+		final Action a = e.getAction();
 		if (e.getItem() != null) {
-			ItemStack i = e.getItem();
+			final ItemStack i = e.getItem();
 			if (i.equals(Lang.specTp)) {
 				e.setCancelled(true);
 				SurvivalGames.getPlayerManager().randomTeleportPlayer(p);
@@ -159,7 +170,7 @@ public class PlayerListener implements Listener {
 				return;
 			}
 			if (i.equals(Lang.iVoteMap)) {
-				new VoteMenu().o(p);
+				new VoteGUI().o(p);
 				return;
 			}
 
@@ -176,38 +187,41 @@ public class PlayerListener implements Listener {
 				return;
 			}
 		if (a.equals(Action.PHYSICAL)) {
-			Material m = e.getClickedBlock().getType();
-			if (m == Material.SOIL || (!SurvivalGames.getPlayerManager().isGameingPlayer(p) && ArenaManager.specCantUse.contains(m)))
+			final Material m = e.getClickedBlock().getType();
+			if (m == Material.SOIL || (!SurvivalGames.getPlayerManager().isGameingPlayer(p) && ArenaManager.specCantUse.contains(m))) {
 				e.setCancelled(true);
+			}
 			return;
 		}
 	}
 
 	@EventHandler
-	public void onSleep(PlayerBedEnterEvent e) {
+	public void onSleep(final PlayerBedEnterEvent e) {
 		e.setCancelled(true);
 	}
 
 	@EventHandler
-	public void onHungerLose(FoodLevelChangeEvent e) {
-		Player p = (Player) e.getEntity();
-		if (!PlayerManager.players.contains(p.getUniqueId()))
+	public void onHungerLose(final FoodLevelChangeEvent e) {
+		final Player p = (Player) e.getEntity();
+		if (!PlayerManager.players.contains(p.getUniqueId())) {
 			e.setFoodLevel(20);
+		}
 	}
 
 	@EventHandler
-	public void onBucketEmpty(PlayerBucketEmptyEvent e) {
-		if (!PlayerManager.builders.contains(e.getPlayer().getUniqueId()))
+	public void onBucketEmpty(final PlayerBucketEmptyEvent e) {
+		if (!PlayerManager.builders.contains(e.getPlayer().getUniqueId())) {
 			e.setCancelled(true);
+		}
 	}
 
 	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent e) {
+	public void onBlockPlace(final BlockPlaceEvent e) {
 		if (SurvivalGames.getPlayerManager().isBuilder(e.getPlayer()))
 			return;
 		if (e.getBlock().getType().equals(Material.FIRE)) {
-			Player p = e.getPlayer();
-			ItemStack i = p.getItemInHand();
+			final Player p = e.getPlayer();
+			final ItemStack i = p.getItemInHand();
 			i.setDurability((short) (i.getDurability() + (i.getType().getMaxDurability() / 4)));
 			if (i.getDurability() >= i.getType().getMaxDurability()) {
 				p.getInventory().remove(i);
@@ -219,7 +233,7 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPing(ServerListPingEvent e) {
+	public void onPing(final ServerListPingEvent e) {
 		switch (GameStatus.getState()) {
 		case WAITING:
 			e.setMotd(ChatColor.GREEN + "等待中!馬上加入!");

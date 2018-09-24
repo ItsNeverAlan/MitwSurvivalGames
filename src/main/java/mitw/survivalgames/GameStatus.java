@@ -7,7 +7,7 @@ public enum GameStatus {
 	private boolean canJoin;
 	private static GameStatus currentState;
 
-	private GameStatus(boolean bl2) {
+	private GameStatus(final boolean bl2) {
 		this.canJoin = bl2;
 	}
 
@@ -15,11 +15,11 @@ public enum GameStatus {
 		return this.canJoin;
 	}
 
-	public static void setState(GameStatus b) {
+	public static void setState(final GameStatus b) {
 		currentState = b;
 	}
 
-	public static boolean isState(GameStatus b) {
+	public static boolean isState(final GameStatus b) {
 		return currentState == b;
 	}
 
@@ -57,11 +57,10 @@ public enum GameStatus {
 		return false;
 	}
 
-	public static boolean isGaming(boolean incloudDm) {
+	public static boolean isGaming(final boolean incloudDm) {
 		if (incloudDm) {
-			if (currentState.equals(GameStatus.GAMING) || currentState.equals(GameStatus.DEATHMATCH)) {
+			if (currentState.equals(GameStatus.GAMING) || currentState.equals(GameStatus.DEATHMATCH))
 				return true;
-			}
 		} else if (currentState.equals(GameStatus.GAMING))
 			return true;
 		return false;

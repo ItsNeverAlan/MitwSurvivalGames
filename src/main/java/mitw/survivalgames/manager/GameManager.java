@@ -2,6 +2,8 @@ package mitw.survivalgames.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -17,11 +19,13 @@ import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.arena.Arena;
+import mitw.survivalgames.ratings.PlayerCache;
 import mitw.survivalgames.scoreboard.BoardSetup;
 import mitw.survivalgames.tasks.DmStartTask;
 import mitw.survivalgames.tasks.FireworkTask;
 import mitw.survivalgames.tasks.GameTask;
 import mitw.survivalgames.utils.Utils;
+import net.md_5.bungee.api.ChatColor;
 
 public class GameManager {
 
@@ -48,10 +52,19 @@ public class GameManager {
 	public void getWinner() {
 		if (!(PlayerManager.players.size() < 2))
 			return;
+
 		BoardSetup.winnerName = SurvivalGames.getPlayerManager().getNameByUUID(PlayerManager.players.get(0));
 		GameStatus.setState(GameStatus.FINISH);
 		if (!PlayerManager.players.isEmpty()) {
-			victoryDance(Bukkit.getPlayer(PlayerManager.players.get(0)));
+			final Player winner = Bukkit.getPlayer(PlayerManager.players.get(0));
+
+			victoryDance(winner);
+
+			final int ratingAdded = SurvivalGames.getRandom().nextInt(50, 85);
+			final PlayerCache killerCache = SurvivalGames.getPlayerManager().getCache(winner.getUniqueId());
+			killerCache.setRating(killerCache.getRating() + ratingAdded);
+
+			winner.sendMessage(Lang.ratingAdded + ratingAdded);
 		}
 		/*
 		 * send to lobby
@@ -62,8 +75,9 @@ public class GameManager {
 
 	private void sendAllPlayers() {
 		final ArrayList<Player> players = new ArrayList<>();
-		for (final Player p : Bukkit.getOnlinePlayers())
+		for (final Player p : Bukkit.getOnlinePlayers()) {
 			players.add(p);
+		}
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -73,8 +87,9 @@ public class GameManager {
 					return;
 				}
 				final Player p = players.get(0);
-				if (p != null)
+				if (p != null) {
 					sendToLobbyServer(p);
+				}
 				players.remove(0);
 			}
 		}.runTaskTimer(SurvivalGames.getInstance(), 0, 3);
@@ -101,7 +116,7 @@ public class GameManager {
 	public void startDeathMatch() {
 		GameStatus.setState(GameStatus.DMSTARTING);
 		teleportDeathMatch();
-		BoardSetup.setTitile(Lang.deathMatchTitle);
+		BoardSetup.setTitile(Utils.colored(Lang.deathMatchTitle));
 		new DmStartTask().runTaskTimer(SurvivalGames.getInstance(), 0, 20);
 	}
 
@@ -119,12 +134,13 @@ public class GameManager {
 	private void checkUsingArena() {
 		final HashMap<Arena, Integer> temp = new HashMap<>();
 		for (final Arena a : ArenaManager.votes.values()) {
-			if (temp.containsKey(a))
+			if (temp.containsKey(a)) {
 				temp.put(a, temp.get(a) + 1);
-			else
+			} else {
 				temp.put(a, 1);
+			}
 		}
-		final ArrayList<Arena> tempArena = new ArrayList<>(ArenaManager.arenas);
+		final List<Arena> tempArena = new ArrayList<>(ArenaManager.arenas);
 		Arena use = null;
 		int highest = 0;
 		for (final Arena a : temp.keySet())
@@ -132,47 +148,48 @@ public class GameManager {
 				highest = temp.get(a);
 				use = a;
 			}
-		if (use == null || ArenaManager.voteRandom.size() > highest)
+		if (use == null || ArenaManager.voteRandom.size() > highest) {
 			use = tempArena.get(SurvivalGames.getRandom().nextInt(tempArena.size()));
+		}
 		ArenaManager.usingArena = use;
 		ArenaManager.usingArenaName = ArenaManager.usingArena.getName();
 	}
 
 	public void teleportPlayers() {
-		final ArrayList<UUID> temp = new ArrayList<>(PlayerManager.players);
+
+		final Iterator<UUID> iterator = new ArrayList<>(PlayerManager.players).iterator();
+
 		new BukkitRunnable() {
-			int run = 0;
-			Player p;
+
+			private int run = 0;
 
 			@Override
 			public void run() {
-				if (temp.isEmpty()) {
+				if (!iterator.hasNext()) {
 					this.cancel();
 					return;
 				}
-				if (Bukkit.getPlayer(temp.get(0)) != null) {
-					p = Bukkit.getPlayer(temp.get(0));
+				final Player p = Bukkit.getPlayer(iterator.next());
+				if (p != null) {
 					p.teleport(ArenaManager.usingArena.spawnPoints.get(run).add(0.5, 0, 0.5));
 					p.closeInventory();
 					sendInfoMessage(p);
 					run++;
 				}
-				temp.remove(0);
 			}
 		}.runTaskTimer(SurvivalGames.getInstance(), 0, 2);
 	}
 
-	private void sendInfoMessage(Player p) {
-		for (final String a : Lang.infoMessage)
-			p.sendMessage(a);
+	private void sendInfoMessage(final Player p) {
+		Lang.infoMessage.forEach(p::sendMessage);
 	}
 
 	public void teleportDeathMatch() {
 		int run = 0;
 		final int addPoint = ArenaManager.usingArena.spawnPoints.size() / PlayerManager.players.size();
 		for (final UUID u : PlayerManager.players) {
-			if (Bukkit.getPlayer(u) != null) {
-				final Player p = Bukkit.getPlayer(u);
+			final Player p = Bukkit.getPlayer(u);
+			if (p != null) {
 				p.teleport(ArenaManager.usingArena.spawnPoints.get(run).add(0.5, 0, 0.5));
 				p.closeInventory();
 			}
@@ -180,7 +197,7 @@ public class GameManager {
 		}
 	}
 
-	public void sendToLobbyServer(Player p) {
+	public void sendToLobbyServer(final Player p) {
 
 		final String server = "waiting";
 
@@ -194,13 +211,21 @@ public class GameManager {
 	}
 
 	public void sendKilltop() {
-		final ArrayList<UUID> temp = Utils.getTopArray(PlayerManager.kills);
+		final List<UUID> temp = Utils.getTopArray(PlayerManager.kills);
 		final PlayerManager pm = SurvivalGames.getPlayerManager();
 		Bukkit.broadcastMessage(Utils.colored("&f&m--------------------------"));
-		Bukkit.broadcastMessage(Utils.colored("&61. " + pm.getNameByUUID(temp.get(0)) + " -> " + PlayerManager.kills.get(temp.get(0)) + " À»±þ"));
-		Bukkit.broadcastMessage(Utils.colored("&e2. " + pm.getNameByUUID(temp.get(1)) + " -> " + PlayerManager.kills.get(temp.get(1)) + " À»±þ"));
-		Bukkit.broadcastMessage(Utils.colored("&a3. " + pm.getNameByUUID(temp.get(2)) + " -> " + PlayerManager.kills.get(temp.get(2)) + " À»±þ"));
+		for (int i = 0; i < temp.size() && i < 3; i++) {
+			Bukkit.broadcastMessage(getKillTopColor(i) + "1. " + pm.getNameByUUID(temp.get(i)) + " -> " + PlayerManager.kills.get(temp.get(i)) + " À»±þ");
+		}
 		Bukkit.broadcastMessage(Utils.colored("&f&m--------------------------"));
+	}
+
+	public String getKillTopColor(final int i) {
+		if (i == 0)
+			return ChatColor.GOLD.toString();
+		else if (i == 1)
+			return ChatColor.YELLOW.toString();
+		return ChatColor.GREEN.toString();
 	}
 
 	public boolean isFull() {
@@ -221,20 +246,20 @@ public class GameManager {
 		return false;
 	}
 
-	public boolean sameBlock(Location location, Location check) {
+	public boolean sameBlock(final Location location, final Location check) {
 		return location.getWorld().getName().equalsIgnoreCase(check.getWorld().getName()) && location.getBlockX() == check.getBlockX()
 				&& location.getBlockY() == check.getBlockY() && location.getBlockZ() == check.getBlockZ();
-
 	}
 
-	public boolean isOutBlock(Location location) {
+	public boolean isOutBlock(final Location location) {
 		return location.distance(ArenaManager.usingArena.getCenter()) >= 40;
 	}
 
-	private void victoryDance(Player p) {
+	private void victoryDance(final Player p) {
 		/* ¼½©ñÁn­µ + °T®§*/
-		for (final String a : Lang.victoryMsg)
-			Bukkit.broadcastMessage(a.replaceAll("<player>", p.getName()));
+		for (final String a : Lang.victoryMsg) {
+			Bukkit.broadcastMessage(a.replaceAll("<player>", p.getName()).replaceAll("<playerKills>", ""+SurvivalGames.getPlayerManager().getKills(p)));
+		}
 		Utils.playSoundAll(Sound.WITHER_DEATH);
 		/* FireWork */
 		new FireworkTask(p).runTaskTimer(SurvivalGames.getInstance(), 0, 10);
