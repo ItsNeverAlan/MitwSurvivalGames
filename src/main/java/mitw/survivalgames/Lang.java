@@ -19,6 +19,15 @@ public class Lang {
 
 	public static String serverName;
 
+	public String zh_tw_statsWins = "勝利次數";
+	public String zh_tw_statsKills = "擊殺次數";
+	public String zh_tw_statsDeaths = "死亡次數";
+	public String zh_tw_statsRating = "積分";
+	public String zh_tw_statsRankTop = "積分排名";
+	public String zh_tw_statsLeaderboard = "排行榜";
+	public String zh_tw_statsTitle = "&6&l玩家&f&l資料";
+	public String zh_tw_lbTitle = "&b&l排行&f&l榜";
+
 	public List<String> zh_tw_watingList = Arrays.asList(
 			"&7&m---------------------------",
 			"&6人數: &f<players>",
@@ -87,7 +96,7 @@ public class Lang {
 	public List<String> en_us_watingList = Arrays.asList(
 			"&7&m---------------------------",
 			"&6Players: &f<players>",
-			"&6Vote end: &f<starting>second(s)",
+			"&6Scattering in: &f<starting>second(s)",
 			"&6Server: &f<server>",
 			"",
 			"&bRating:&f <rating>",
@@ -148,6 +157,15 @@ public class Lang {
 	public String en_us_serverName, en_us_bungeeBroadCastCmd;
 	public List<String> en_us_victoryMsg = new ArrayList<>();
 	public List<String> en_us_infoMessage = new ArrayList<>();
+
+	public String en_us_statsWins = "Wins";
+	public String en_us_statsKills = "Kills";
+	public String en_us_statsDeaths = "Deaths";
+	public String en_us_statsRating = "Rating";
+	public String en_us_statsRankTop = "Rating Top";
+	public String en_us_statsLeaderboard = "Leaderboard";
+	public String en_us_statsTitle = "&6&lPlayer&f&l stats";
+	public String en_us_lbTitle = "&b&lLeader&f&lboard";
 
 	public Lang() {
 		setupList();

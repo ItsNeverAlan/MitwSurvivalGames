@@ -38,7 +38,7 @@ public class RatingManager {
 		AsyncUtils.runAsync(() -> {
 			{
 				final Map<String, Integer> ratingTop = new HashMap<>();
-				database.getSqlTable().executeQuery("SELECT name, rating from " + database.getTABLE_NAME() + " order by rating desc")
+				database.getSqlTable().executeQuery("SELECT name, rating from " + database.getTABLE_NAME() + "")
 				.dataSource(database.getDatabase().getDataSource())
 				.result(r -> {
 					if (r.isBeforeFirst()) {

@@ -1,5 +1,6 @@
 package mitw.survivalgames.tasks;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -28,6 +29,7 @@ public class StartTask extends BukkitRunnable {
 			final PotionEffect eff = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 15 * 20, 255);
 			for (final UUID u : PlayerManager.players)
 				eff.apply(Bukkit.getPlayer(u));
+			PlayerManager.oringalPlayers = new ArrayList<>(PlayerManager.players);
 			new GameTask().runTaskTimer(SurvivalGames.getInstance(), 0, 20);
 			Utils.playSoundAll(Sound.ENDERDRAGON_GROWL);
 			Bukkit.getOnlinePlayers().forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "gameStarted")));

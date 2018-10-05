@@ -19,13 +19,13 @@ public class StatsCommand extends BukkitCommand{
 		if (args.length > 0) {
 			final Player target = Bukkit.getPlayer(args[0]);
 			if (target != null) {
-				new StatsGUI(SurvivalGames.getPlayerManager().getCache(target.getUniqueId())).o((Player)sender);
+				new StatsGUI((Player)sender, SurvivalGames.getPlayerManager().getCache(target.getUniqueId())).o((Player)sender);
 			} else {
 				sender.sendMessage(SurvivalGames.getLanguage().translate((Player)sender, "notOnline"));
 			}
 			return true;
 		}
-		new StatsGUI(SurvivalGames.getPlayerManager().getCache(((Player)sender).getUniqueId())).o((Player)sender);
+		new StatsGUI((Player)sender, SurvivalGames.getPlayerManager().getCache(((Player)sender).getUniqueId())).o((Player)sender);
 		return false;
 	}
 

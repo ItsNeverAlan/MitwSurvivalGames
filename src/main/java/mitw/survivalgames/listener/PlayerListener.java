@@ -183,7 +183,7 @@ public class PlayerListener implements Listener {
 				return;
 			}
 			if (i.equals(Lang.statsItem)) {
-				new StatsGUI(SurvivalGames.getPlayerManager().getCache(p.getUniqueId())).o(p);
+				new StatsGUI(p, SurvivalGames.getPlayerManager().getCache(p.getUniqueId())).o(p);
 				return;
 			}
 

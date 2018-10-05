@@ -29,6 +29,7 @@ public class PlayerManager {
 	public static int max = 0;
 	public static Location spawnLocation;
 	public static List<UUID> players = new ArrayList<>();
+	public static List<UUID> oringalPlayers = new ArrayList<>();
 	public static List<UUID> builders = new ArrayList<>();
 	public static Map<UUID, String> uuidDB = new HashMap<>();
 	public static Map<Location, Player> spawns = new HashMap<>();
@@ -53,6 +54,10 @@ public class PlayerManager {
 	public void saveCache(final UUID uuid) {
 
 		if (!playerCaches.containsKey(uuid)) {
+			return;
+		}
+
+		if (!oringalPlayers.contains(uuid)) {
 			return;
 		}
 
