@@ -46,21 +46,30 @@ public class PlayerManager {
 		return playerCaches.put(player.getUniqueId(), RatingManager.getInstance().getDatabase().createCache(player));
 	}
 
-	public void saveCache(final Player player) {
+	public boolean hasCache(UUID uuid) {
+		return playerCaches.containsKey(uuid);
+	}
 
-		if (!playerCaches.containsKey(player.getUniqueId()))
+	public void saveCache(final UUID uuid) {
+
+		if (!playerCaches.containsKey(uuid)) {
 			return;
+		}
 
-		final PlayerCache playerCache = playerCaches.remove(player.getUniqueId());
+		final PlayerCache playerCache = playerCaches.get(uuid);
 
 		if (GameStatus.isGaming(true)) {
-			playerCache.setKills(playerCache.getKills() + kills.get(player.getUniqueId()));
-			if (!players.contains(player.getUniqueId())) {
+			if (kills.containsKey(uuid)) {
+				playerCache.setKills(playerCache.getKills() + kills.get(uuid));
+			}
+			if (!players.contains(uuid)) {
 				playerCache.setDeaths(playerCache.getDeaths() + 1);
 			}
 		} else if (GameStatus.isFinished()) {
-			playerCache.setKills(playerCache.getKills() + kills.get(player.getUniqueId()));
-			if (players.get(0).equals(player.getUniqueId())) {
+			if (kills.containsKey(uuid)) {
+				playerCache.setKills(playerCache.getKills() + kills.get(uuid));
+			}
+			if (players.get(0).equals(uuid)) {
 				playerCache.setWins(playerCache.getWins() + 1);
 			} else {
 				playerCache.setDeaths(playerCache.getDeaths() + 1);
@@ -69,6 +78,14 @@ public class PlayerManager {
 
 		RatingManager.getInstance().getDatabase().savePlayerCache(playerCache);
 
+	}
+
+	public void removeCache(UUID uuid) {
+		playerCaches.remove(uuid);
+	}
+
+	public void saveAllCache() {
+		new ArrayList<>(playerCaches.keySet()).forEach(this::saveCache);
 	}
 
 	public PlayerCache getCache(final UUID uuid) {
@@ -113,6 +130,7 @@ public class PlayerManager {
 		final PlayerInventory i = p.getInventory();
 		i.setItem(0, Lang.iVoteMap);
 		i.setItem(1, Lang.arrowTrails);
+		i.setItem(2, Lang.statsItem);
 		i.setItem(8, Lang.returnToLobby);
 	}
 
@@ -173,8 +191,12 @@ public class PlayerManager {
 	}
 
 	public int getKills(final Player p) {
-		if (kills.get(p.getUniqueId()) != null)
-			return kills.get(p.getUniqueId());
+		return getKills(p.getUniqueId());
+	}
+
+	public int getKills(final UUID uuid) {
+		if (kills.containsKey(uuid))
+			return kills.get(uuid);
 		return 0;
 	}
 

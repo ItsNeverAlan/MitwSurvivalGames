@@ -41,7 +41,7 @@ public class FileManager {
 	public void saveLocationConfig() {
 		try {
 			locConfig.save(location);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -49,7 +49,7 @@ public class FileManager {
 	public void saveSettingsConfig() {
 		try {
 			settingsConfig.save(settings);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -60,7 +60,7 @@ public class FileManager {
 			try {
 				file.createNewFile();
 				SurvivalGames.getInstance().saveResource(name, true);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
 			}
 
@@ -68,7 +68,7 @@ public class FileManager {
 	}
 
 	public void writeNewArena(String name) {
-		ArrayList<String> empty = new ArrayList<>();
+		final ArrayList<String> empty = new ArrayList<>();
 		getClocation().set("Arenas." + name + ".spawnPoints", empty.toArray());
 		getClocation().set("Arenas." + name + ".centerChest", empty.toArray());
 		getClocation().set("Arenas." + name + ".Tir2s", empty.toArray());
@@ -90,9 +90,9 @@ public class FileManager {
 	private void loadArenas() {
 		if (!getClocation().isConfigurationSection("Arenas"))
 			return;
-		for (String arena : getClocation().getConfigurationSection("Arenas").getKeys(false)) {
+		for (final String arena : getClocation().getConfigurationSection("Arenas").getKeys(false)) {
 			/* load world first to let arena location can be cast */
-			Arena a = new Arena();
+			final Arena a = new Arena();
 			a.setName(arena);
 			/* load arenas loacation */
 			ArenaManager.arenas.add(a);
@@ -103,7 +103,6 @@ public class FileManager {
 	private void loadOthers() {
 		GameManager.minPlayerToStart = getCsettings().getInt("minPlayer");
 		Lang.serverName = getCsettings().getString("serverName");
-		Lang.bungeeBroadCastCmd = getCsettings().getString("broadCastCommand");
 	}
 
 }

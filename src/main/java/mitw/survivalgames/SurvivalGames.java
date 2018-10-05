@@ -6,7 +6,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import lombok.Getter;
+import mitw.survivalgames.commands.StatsCommand;
 import mitw.survivalgames.commands.SurvivalGamesCommand;
+import mitw.survivalgames.handler.SGChatHandler;
 import mitw.survivalgames.listener.ArenaListener;
 import mitw.survivalgames.listener.InventoryListener;
 import mitw.survivalgames.listener.JoinQuitListener;
@@ -21,7 +23,9 @@ import mitw.survivalgames.scoreboard.BoardSetup;
 import mitw.survivalgames.utils.FastRandom;
 import mitw.survivalgames.utils.ItemBuilder;
 import mitw.survivalgames.utils.Utils;
-import mitw.survivalgames.utils.mysql.mysql.builder.hikari.HikariHandler;
+import net.development.mitw.Mitw;
+import net.development.mitw.language.LanguageAPI;
+import net.development.mitw.language.LanguageAPI.LangType;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 
 public class SurvivalGames extends JavaPlugin {
@@ -36,6 +40,9 @@ public class SurvivalGames extends JavaPlugin {
 
 	@Getter
 	private static FastRandom random = new FastRandom();
+
+	@Getter
+	private static LanguageAPI language;
 
 	@Override
 	public void onEnable() {
@@ -86,15 +93,15 @@ public class SurvivalGames extends JavaPlugin {
 		new Utils();
 		new ItemBuilder();
 
-		new Lang();
-
 		new ArenaManager();
 		new SgChestManager();
 		new GameManager();
 		new PlayerManager();
 
-		HikariHandler.init();
+		language = new LanguageAPI(LangType.CLASS, this, Mitw.getInstance().getLanguageData(), new Lang());
+
 		new RatingManager();
+		Mitw.getInstance().addChatHandler(new SGChatHandler());
 	}
 
 	private void registerEvents() {
@@ -108,7 +115,8 @@ public class SurvivalGames extends JavaPlugin {
 
 	private void registerCommands() {
 		Arrays.asList(
-				new SurvivalGamesCommand()
+				new SurvivalGamesCommand(),
+				new StatsCommand()
 				)
 		.forEach(command -> MinecraftServer.getServer().server.getCommandMap().register("mitwsg", command));
 	}

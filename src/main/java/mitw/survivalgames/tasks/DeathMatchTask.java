@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import mitw.survivalgames.GameStatus;
-import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.manager.PlayerManager;
 
@@ -22,9 +21,11 @@ public class DeathMatchTask extends BukkitRunnable {
 		}
 		a--;
 		if (a == 0) {
-			Bukkit.broadcastMessage(Lang.allLightStart);
+			Bukkit.getOnlinePlayers()
+			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "allLightStart")));
 		} else if (a > 0 && (a % 60 == 0 || a <= 5))
-			Bukkit.broadcastMessage(Lang.allStrikeLightCount.replaceAll("<time>", String.valueOf(a)));
+			Bukkit.getOnlinePlayers()
+			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "allStrikeLightCount").replaceAll("<time>", String.valueOf(a))));
 		if (a % 2 != 0)
 			return;
 		for (final UUID u : PlayerManager.players) {
@@ -38,7 +39,7 @@ public class DeathMatchTask extends BukkitRunnable {
 			if (SurvivalGames.getGameManager().isOutBlock(p.getLocation())) {
 				p.getWorld().strikeLightningEffect(p.getLocation());
 				p.damage(2.0);
-				p.sendMessage(Lang.outArena);
+				p.sendMessage(SurvivalGames.getLanguage().translate(p, "outArena"));
 			}
 		}
 

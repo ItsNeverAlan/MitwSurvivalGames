@@ -5,7 +5,6 @@ import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import mitw.survivalgames.GameStatus;
-import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.utils.Utils;
 
@@ -29,12 +28,18 @@ public class GameTask extends BukkitRunnable
 		}
 		if (timeLeft == 30 || (timeLeft > 0 && timeLeft <= 10)) {
 			Utils.playSoundAll(Sound.NOTE_PLING);
-			Bukkit.broadcastMessage(Lang.gameCount.replaceAll("<time>", String.valueOf(timeLeft) + " ¡±c¬íÄÁ"));
+			Bukkit.getOnlinePlayers()
+			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "gameCount")
+					.replaceAll("<time>", String.valueOf(timeLeft) + " ¡±c" +
+			SurvivalGames.getLanguage().translate(pl, "seconds"))));
 			return;
 		}
 		if (timeLeft % 300 == 0 || timeLeft == 180 || timeLeft == 120 || timeLeft == 60) {
 			Utils.playSoundAll(Sound.NOTE_PLING);
-			Bukkit.broadcastMessage(Lang.gameCount.replaceAll("<time>", String.valueOf(timeLeft / 60) + " ¡±c¤ÀÄÁ"));
+			Bukkit.getOnlinePlayers()
+			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "gameCount")
+					.replaceAll("<time>", String.valueOf(timeLeft / 60) + " ¡±c" +
+			SurvivalGames.getLanguage().translate(pl, "minutes"))));
 			return;
 		}
 

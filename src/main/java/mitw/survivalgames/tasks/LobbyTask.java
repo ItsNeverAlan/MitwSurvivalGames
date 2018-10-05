@@ -5,9 +5,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import mitw.survivalgames.Lang;
-import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.GameStatus;
+import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.utils.Utils;
 
@@ -19,7 +18,7 @@ public class LobbyTask extends BukkitRunnable {
 		if (!SurvivalGames.getGameManager().canStart()) {
 			GameManager.starting = false;
 			GameStatus.setState(GameStatus.WAITING);
-			Bukkit.broadcastMessage(Lang.cantStart);
+			Bukkit.getOnlinePlayers().forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "cantStart")));
 			Utils.playSoundAll(Sound.VILLAGER_HIT);
 			timeLeft = 30;
 			this.cancel();
@@ -27,7 +26,7 @@ public class LobbyTask extends BukkitRunnable {
 		}
 		timeLeft--;
 		if (timeLeft < 1) {
-			for (Player p : Bukkit.getOnlinePlayers()) {
+			for (final Player p : Bukkit.getOnlinePlayers()) {
 				SurvivalGames.getPlayerManager().clearInventory(p);
 			}
 			GameStatus.setState(GameStatus.STARRTING);
@@ -36,7 +35,7 @@ public class LobbyTask extends BukkitRunnable {
 			this.cancel();
 		} else {
 			if (timeLeft <= 5 || timeLeft == 10 || timeLeft == 15)
-				Bukkit.broadcastMessage(Lang.lobbyCount.replaceAll("<time>", String.valueOf(timeLeft)));
+				Bukkit.getOnlinePlayers().forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "lobbyCount").replaceAll("<time>", String.valueOf(timeLeft))));
 		}
 
 	}

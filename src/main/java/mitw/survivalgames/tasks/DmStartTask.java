@@ -5,7 +5,6 @@ import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import mitw.survivalgames.GameStatus;
-import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.utils.Utils;
@@ -22,7 +21,8 @@ public class DmStartTask extends BukkitRunnable {
 		}
 		count--;
 		if (count > 0)
-			Bukkit.broadcastMessage(Lang.deathMatchStartCount.replaceAll("<time>", String.valueOf(count)));
+			Bukkit.getOnlinePlayers()
+			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "deathMatchStartCount").replaceAll("<time>", String.valueOf(count))));
 		else {
 			GameStatus.setState(GameStatus.DEATHMATCH);
 			GameManager.isDeathMatching = true;

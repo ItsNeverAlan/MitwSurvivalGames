@@ -3,6 +3,7 @@ package mitw.survivalgames.listener;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -29,6 +30,7 @@ import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.arena.Arena;
+import mitw.survivalgames.guis.StatsGUI;
 import mitw.survivalgames.guis.VoteGUI;
 import mitw.survivalgames.manager.ArenaManager;
 import mitw.survivalgames.manager.PlayerManager;
@@ -41,6 +43,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onDeath(final PlayerDeathEvent e) {
 		final Player p = e.getEntity();
+		e.setDeathMessage(null);
 		if (!SurvivalGames.getPlayerManager().isGameingPlayer(p))
 			return;
 		SurvivalGames.getPlayerManager().setSpec(p);
@@ -52,16 +55,22 @@ public class PlayerListener implements Listener {
 			final DecimalFormat df = new DecimalFormat("##.0");
 			final String kHeart = df.format(k.getHealth() / 2D);
 			SurvivalGames.getPlayerManager().addKills(k);
-			p.sendMessage(Lang.youGotKillByS1.replaceAll("<player>", k.getName()).replaceAll("<heart>", kHeart));
-			k.sendMessage(Lang.youKills1.replaceAll("<player>", p.getName()));
+			p.sendMessage(SurvivalGames.getLanguage().translate(p, "youGotKillByS1").replaceAll("<player>", k.getName()).replaceAll("<heart>", kHeart));
+			k.sendMessage(SurvivalGames.getLanguage().translate(k, "youKills1").replaceAll("<player>", p.getName()));
 
-			final int ratingAdded = SurvivalGames.getRandom().nextInt(5, 15);
+			final int ratingAdded = SurvivalGames.getRandom().nextInt(4, 6);
 			final PlayerCache killerCache = SurvivalGames.getPlayerManager().getCache(k.getUniqueId());
 			killerCache.setRating(killerCache.getRating() + ratingAdded);
 
-			k.sendMessage(Lang.ratingAdded + ratingAdded);
+			k.sendMessage(SurvivalGames.getLanguage().translate(k, "ratingAdded") + ratingAdded);
 		}
-		e.setDeathMessage(Lang.s1Death.replaceAll("<player>", p.getName()).replaceAll("<size>", String.valueOf(PlayerManager.players.size())));
+		final PlayerCache playerCache = SurvivalGames.getPlayerManager().getCache(p.getUniqueId());
+		if (playerCache.getRating() > 1200) {
+			final int ratingRemove = SurvivalGames.getRandom().nextInt(2, 3);
+			p.sendMessage(SurvivalGames.getLanguage().translate(p, "ratingRemoved") + ratingRemove + " " + SurvivalGames.getLanguage().translate(p, "ratingRemoveReason"));
+			playerCache.setRating(playerCache.getRating() - ratingRemove);
+		}
+		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "s1Death").replaceAll("<player>", p.getName()).replaceAll("<size>", String.valueOf(PlayerManager.players.size()))));
 		SurvivalGames.getGameManager().checkWin();
 	}
 
@@ -171,6 +180,10 @@ public class PlayerListener implements Listener {
 			}
 			if (i.equals(Lang.iVoteMap)) {
 				new VoteGUI().o(p);
+				return;
+			}
+			if (i.equals(Lang.statsItem)) {
+				new StatsGUI(SurvivalGames.getPlayerManager().getCache(p.getUniqueId())).o(p);
 				return;
 			}
 

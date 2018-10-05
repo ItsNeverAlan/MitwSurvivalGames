@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import mitw.survivalgames.GameStatus;
-import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.manager.ArenaManager;
 import mitw.survivalgames.manager.GameManager;
@@ -28,6 +27,7 @@ public class JoinQuitListener implements Listener {
 	public void onJoin(final PlayerJoinEvent e) {
 		final Player p = e.getPlayer();
 		SurvivalGames.getPlayerManager().createCache(p);
+		e.setJoinMessage(null);
 		switch (GameStatus.getState()) {
 		case WAITING:
 			final PlayerManager pm = SurvivalGames.getPlayerManager();
@@ -38,22 +38,20 @@ public class JoinQuitListener implements Listener {
 			p.setGameMode(GameMode.SURVIVAL);
 			if (!isCast) {
 				Bukkit.getScheduler().runTaskLater(SurvivalGames.getInstance(), () -> {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Lang.bungeeBroadCastCmd);
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), SurvivalGames.getFileManager().getCsettings().getString("broadCastCommand"));
 					isCast = true;
 				}, 5);
-
 			}
 			if (SurvivalGames.getGameManager().canStart() && !GameManager.starting) {
 				GameManager.starting = true;
 				Utils.playSoundAll(Sound.NOTE_PLING);
 				new LobbyTask().runTaskTimer(SurvivalGames.getInstance(), 0, 20);
 			}
-			e.setJoinMessage(Lang.pplJoin.replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size())));
+			Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "pplJoin").replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size()))));
 			break;
 		default:
 			SurvivalGames.getPlayerManager().setSpec(p);
 			SurvivalGames.getPlayerManager().randomTeleportPlayer(p);
-			e.setJoinMessage(null);
 			break;
 		}
 	}
@@ -63,12 +61,11 @@ public class JoinQuitListener implements Listener {
 		e.setQuitMessage(null);
 		final Player p = e.getPlayer();
 		ScoreHelper.removeScore(p);
-		SurvivalGames.getPlayerManager().saveCache(p);
+		e.setQuitMessage(null);
 		switch (GameStatus.getState()) {
 		case WAITING:
 			PlayerManager.players.remove(p.getUniqueId());
-			e.setQuitMessage(
-					Lang.pplLeave.replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size() - 1)));
+			Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "pplLeave").replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size() - 1))));
 			if (ArenaManager.votes.containsKey(p.getUniqueId())) {
 				ArenaManager.votes.remove(p.getUniqueId());
 			}
@@ -78,6 +75,7 @@ public class JoinQuitListener implements Listener {
 			if (Bukkit.getOnlinePlayers().size() - 1 <= 0F) {
 				isCast = false;
 			}
+			SurvivalGames.getPlayerManager().removeCache(p.getUniqueId());
 			return;
 		case GAMING:
 			if (SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
@@ -106,7 +104,6 @@ public class JoinQuitListener implements Listener {
 		default:
 			break;
 		}
-		PlayerManager.kills.remove(p.getUniqueId());
 	}
 
 	@EventHandler

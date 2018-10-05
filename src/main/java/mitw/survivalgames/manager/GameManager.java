@@ -54,18 +54,21 @@ public class GameManager {
 			return;
 
 		BoardSetup.winnerName = SurvivalGames.getPlayerManager().getNameByUUID(PlayerManager.players.get(0));
+		BoardSetup.winnerKills = SurvivalGames.getPlayerManager().getKills(PlayerManager.players.get(0)) + "";
 		GameStatus.setState(GameStatus.FINISH);
 		if (!PlayerManager.players.isEmpty()) {
 			final Player winner = Bukkit.getPlayer(PlayerManager.players.get(0));
 
 			victoryDance(winner);
 
-			final int ratingAdded = SurvivalGames.getRandom().nextInt(50, 85);
+			final int ratingAdded = SurvivalGames.getRandom().nextInt(18, 25);
 			final PlayerCache killerCache = SurvivalGames.getPlayerManager().getCache(winner.getUniqueId());
 			killerCache.setRating(killerCache.getRating() + ratingAdded);
 
-			winner.sendMessage(Lang.ratingAdded + ratingAdded);
+			winner.sendMessage(SurvivalGames.getLanguage().translate(winner, "ratingAdded") + ratingAdded);
 		}
+
+		SurvivalGames.getPlayerManager().saveAllCache();
 		/*
 		 * send to lobby
 		 */
@@ -74,10 +77,7 @@ public class GameManager {
 	}
 
 	private void sendAllPlayers() {
-		final ArrayList<Player> players = new ArrayList<>();
-		for (final Player p : Bukkit.getOnlinePlayers()) {
-			players.add(p);
-		}
+		final ArrayList<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -86,13 +86,12 @@ public class GameManager {
 					Bukkit.shutdown();
 					return;
 				}
-				final Player p = players.get(0);
+				final Player p = players.remove(0);
 				if (p != null) {
 					sendToLobbyServer(p);
 				}
-				players.remove(0);
 			}
-		}.runTaskTimer(SurvivalGames.getInstance(), 0, 3);
+		}.runTaskTimer(SurvivalGames.getInstance(), 0L, 2L);
 	}
 
 	private void getDeathMatch() {
@@ -101,7 +100,7 @@ public class GameManager {
 		if (PlayerManager.players.size() <= 4) {
 			canDeathMatch = true;
 			Utils.playSoundAll(Sound.NOTE_PLING);
-			Bukkit.broadcastMessage(Lang.needDeathMatch);
+			Bukkit.getOnlinePlayers().forEach(p -> SurvivalGames.getLanguage().translate(p, "needDeathMatch"));
 			GameTask.timeLeft = 121;
 		}
 	}
@@ -181,7 +180,7 @@ public class GameManager {
 	}
 
 	private void sendInfoMessage(final Player p) {
-		Lang.infoMessage.forEach(p::sendMessage);
+		SurvivalGames.getLanguage().translateArrays(p, "infoMessage").forEach(p::sendMessage);
 	}
 
 	public void teleportDeathMatch() {
@@ -215,7 +214,10 @@ public class GameManager {
 		final PlayerManager pm = SurvivalGames.getPlayerManager();
 		Bukkit.broadcastMessage(Utils.colored("&f&m--------------------------"));
 		for (int i = 0; i < temp.size() && i < 3; i++) {
-			Bukkit.broadcastMessage(getKillTopColor(i) + "1. " + pm.getNameByUUID(temp.get(i)) + " -> " + PlayerManager.kills.get(temp.get(i)) + " 擊殺");
+			final String color = getKillTopColor(i), top = (i + 1) + "", name = pm.getNameByUUID(temp.get(i)), kills = PlayerManager.kills.get(temp.get(i)) + "";
+			Bukkit.getOnlinePlayers()
+			.forEach(pl -> pl.sendMessage(color + top + ". " + name + " -> " + kills + " "
+					+ SurvivalGames.getLanguage().translate(pl, "kills")));
 		}
 		Bukkit.broadcastMessage(Utils.colored("&f&m--------------------------"));
 	}
@@ -257,9 +259,10 @@ public class GameManager {
 
 	private void victoryDance(final Player p) {
 		/* 播放聲音 + 訊息*/
-		for (final String a : Lang.victoryMsg) {
-			Bukkit.broadcastMessage(a.replaceAll("<player>", p.getName()).replaceAll("<playerKills>", ""+SurvivalGames.getPlayerManager().getKills(p)));
-		}
+		Bukkit.getOnlinePlayers()
+		.forEach(pl -> SurvivalGames.getLanguage().translateArrays(pl, "victoryMsg")
+				.forEach(msg -> pl.sendMessage(msg.replaceAll("<player>", p.getName()).replaceAll("<playerKills>", ""+SurvivalGames.getPlayerManager().getKills(p)))));
+
 		Utils.playSoundAll(Sound.WITHER_DEATH);
 		/* FireWork */
 		new FireworkTask(p).runTaskTimer(SurvivalGames.getInstance(), 0, 10);
