@@ -62,6 +62,7 @@ public class JoinQuitListener implements Listener {
 		final Player p = e.getPlayer();
 		ScoreHelper.removeScore(p);
 		e.setQuitMessage(null);
+		SurvivalGames.getPlayerManager().saveCache(p.getUniqueId());
 		switch (GameStatus.getState()) {
 		case WAITING:
 			PlayerManager.players.remove(p.getUniqueId());

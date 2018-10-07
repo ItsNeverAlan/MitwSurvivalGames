@@ -38,7 +38,7 @@ public class ArenaManager {
 	}
 
 	public void createNewArena(String name) {
-		Arena a = new Arena();
+		final Arena a = new Arena();
 		a.setName(name);
 		arenas.add(a);
 		Bukkit.createWorld(new WorldCreator(name));
@@ -48,7 +48,7 @@ public class ArenaManager {
 	}
 
 	public Arena getArena(String s) {
-		for (Arena a : arenas) {
+		for (final Arena a : arenas) {
 			if (a.getName().toLowerCase().equals(s.toLowerCase()))
 				return a;
 		}
@@ -56,10 +56,10 @@ public class ArenaManager {
 	}
 
 	public void loadArena(Arena a) {
-		Bukkit.broadcastMessage(Utils.colored("&e地圖生成中......."));
-		String arenaName = a.getName();
-		FileConfiguration c = SurvivalGames.getFileManager().getClocation();
-		World w = Bukkit.createWorld(new WorldCreator(arenaName));
+		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "generatingWorld")));
+		final String arenaName = a.getName();
+		final FileConfiguration c = SurvivalGames.getFileManager().getClocation();
+		final World w = Bukkit.createWorld(new WorldCreator(arenaName));
 		w.setAutoSave(false);
 		a.setWorld(w);
 		w.setMonsterSpawnLimit(0);
@@ -71,13 +71,13 @@ public class ArenaManager {
 		w.setDifficulty(Difficulty.PEACEFUL);
 		w.setDifficulty(Difficulty.EASY);
 		a.setCenter(Utils.StrToLoc(c.getString("Arenas." + arenaName + ".center")));
-		for (String spawn : c.getStringList("Arenas." + arenaName + ".spawnPoints"))
+		for (final String spawn : c.getStringList("Arenas." + arenaName + ".spawnPoints"))
 			a.addSpawn(Utils.StrToLocPitch(spawn));
-		for (String tir2 : c.getStringList("Arenas." + arenaName + ".Tir2s"))
+		for (final String tir2 : c.getStringList("Arenas." + arenaName + ".Tir2s"))
 			a.addTir2(Utils.StrToLoc(tir2));
-		for (String centerChest : c.getStringList("Arenas." + arenaName + ".centerChest"))
+		for (final String centerChest : c.getStringList("Arenas." + arenaName + ".centerChest"))
 			a.addCenter(Utils.StrToLoc(centerChest));
-		Bukkit.broadcastMessage(Utils.colored("&e生成完畢"));
+		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "generatedWorld")));
 	}
 
 	private void setupCanBreaks() {
@@ -101,7 +101,7 @@ public class ArenaManager {
 
 			@Override
 			public void run() {
-				for (World w : Bukkit.getWorlds()) {
+				for (final World w : Bukkit.getWorlds()) {
 					w.setMonsterSpawnLimit(0);
 					w.setAnimalSpawnLimit(0);
 					w.setGameRuleValue("doMobSpawning", "false");

@@ -61,6 +61,7 @@ public class PlayerManager {
 			return;
 		}
 
+		oringalPlayers.remove(uuid);
 		final PlayerCache playerCache = playerCaches.get(uuid);
 
 		if (GameStatus.isGaming(true)) {
