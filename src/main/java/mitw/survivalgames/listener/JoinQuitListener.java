@@ -26,15 +26,14 @@ public class JoinQuitListener implements Listener {
 	@EventHandler
 	public void onJoin(final PlayerJoinEvent e) {
 		final Player p = e.getPlayer();
-		SurvivalGames.getPlayerManager().createCache(p);
+		PlayerManager.createCache(p);
 		e.setJoinMessage(null);
 		switch (GameStatus.getState()) {
 		case WAITING:
-			final PlayerManager pm = SurvivalGames.getPlayerManager();
-			pm.clearInventory(p);
-			pm.tpToSpawn(p);
-			pm.giveWaitingItem(p);
-			pm.putUuidDb(p);
+			PlayerManager.clearInventory(p);
+			PlayerManager.tpToSpawn(p);
+			PlayerManager.giveWaitingItem(p);
+			PlayerManager.putUuidDb(p);
 			p.setGameMode(GameMode.SURVIVAL);
 			if (!isCast) {
 				Bukkit.getScheduler().runTaskLater(SurvivalGames.getInstance(), () -> {
@@ -42,7 +41,7 @@ public class JoinQuitListener implements Listener {
 					isCast = true;
 				}, 5);
 			}
-			if (SurvivalGames.getGameManager().canStart() && !GameManager.starting) {
+			if (GameManager.canStart() && !GameManager.starting) {
 				GameManager.starting = true;
 				Utils.playSoundAll(Sound.NOTE_PLING);
 				new LobbyTask().runTaskTimer(SurvivalGames.getInstance(), 0, 20);
@@ -50,8 +49,8 @@ public class JoinQuitListener implements Listener {
 			Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "pplJoin").replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size()))));
 			break;
 		default:
-			SurvivalGames.getPlayerManager().setSpec(p);
-			SurvivalGames.getPlayerManager().randomTeleportPlayer(p);
+			PlayerManager.setSpec(p);
+			PlayerManager.randomTeleportPlayer(p);
 			break;
 		}
 	}
@@ -62,45 +61,45 @@ public class JoinQuitListener implements Listener {
 		final Player p = e.getPlayer();
 		ScoreHelper.removeScore(p);
 		e.setQuitMessage(null);
-		SurvivalGames.getPlayerManager().saveCache(p.getUniqueId());
+		PlayerManager.saveCache(p.getUniqueId());
 		switch (GameStatus.getState()) {
 		case WAITING:
-			PlayerManager.players.remove(p.getUniqueId());
+			PlayerManager.getPlayers().remove(p.getUniqueId());
 			Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "pplLeave").replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size() - 1))));
-			if (ArenaManager.votes.containsKey(p.getUniqueId())) {
-				ArenaManager.votes.remove(p.getUniqueId());
+			if (ArenaManager.getVotes().containsKey(p.getUniqueId())) {
+				ArenaManager.getVotes().remove(p.getUniqueId());
 			}
-			if (ArenaManager.voteRandom.contains(p.getUniqueId())) {
-				ArenaManager.voteRandom.remove(p.getUniqueId());
+			if (ArenaManager.getVoteRandom().contains(p.getUniqueId())) {
+				ArenaManager.getVoteRandom().remove(p.getUniqueId());
 			}
 			if (Bukkit.getOnlinePlayers().size() - 1 <= 0F) {
 				isCast = false;
 			}
-			SurvivalGames.getPlayerManager().removeCache(p.getUniqueId());
+			PlayerManager.removeCache(p.getUniqueId());
 			return;
 		case GAMING:
-			if (SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
+			if (PlayerManager.isGameingPlayer(p)) {
 				p.setHealth(0.0);
-				PlayerManager.players.remove(p.getUniqueId());
-				SurvivalGames.getGameManager().checkWin();
+				PlayerManager.getPlayers().remove(p.getUniqueId());
+				GameManager.checkWin();
 			}
 			break;
 		case STARRTING:
-			if (SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
-				PlayerManager.players.remove(p.getUniqueId());
+			if (PlayerManager.isGameingPlayer(p)) {
+				PlayerManager.getPlayers().remove(p.getUniqueId());
 			}
 			break;
 		case DMSTARTING:
-			if (SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
+			if (PlayerManager.isGameingPlayer(p)) {
 				p.setHealth(0.0);
-				PlayerManager.players.remove(p.getUniqueId());
-				SurvivalGames.getGameManager().checkWin();
+				PlayerManager.getPlayers().remove(p.getUniqueId());
+				GameManager.checkWin();
 			}
 		case DEATHMATCH:
-			if (SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
+			if (PlayerManager.isGameingPlayer(p)) {
 				p.setHealth(0.0);
-				PlayerManager.players.remove(p.getUniqueId());
-				SurvivalGames.getGameManager().checkWin();
+				PlayerManager.getPlayers().remove(p.getUniqueId());
+				GameManager.checkWin();
 			}
 		default:
 			break;
@@ -109,7 +108,7 @@ public class JoinQuitListener implements Listener {
 
 	@EventHandler
 	public void onLogin(final PlayerLoginEvent e) {
-		if (GameStatus.isWaiting() && SurvivalGames.getGameManager().isFull()) {
+		if (GameStatus.isWaiting() && GameManager.isFull()) {
 			e.disallow(Result.KICK_WHITELIST, Utils.colored("&c遊戲滿人了!!"));
 		} else if (GameStatus.isStarting()) {
 			e.disallow(Result.KICK_WHITELIST, Utils.colored("&c遊戲正在傳送中,請稍等再加入觀戰"));

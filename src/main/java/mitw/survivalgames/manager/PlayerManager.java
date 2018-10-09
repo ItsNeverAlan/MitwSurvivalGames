@@ -17,6 +17,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import lombok.Getter;
+import lombok.Setter;
 import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
@@ -25,33 +27,39 @@ import mitw.survivalgames.ratings.RatingManager;
 
 public class PlayerManager {
 
-	public static PlayerManager ins;
-	public static int max = 0;
-	public static Location spawnLocation;
-	public static List<UUID> players = new ArrayList<>();
-	public static List<UUID> oringalPlayers = new ArrayList<>();
-	public static List<UUID> builders = new ArrayList<>();
-	public static Map<UUID, String> uuidDB = new HashMap<>();
-	public static Map<Location, Player> spawns = new HashMap<>();
-	public static Map<UUID, Integer> kills = new HashMap<>();
-
+	@Getter
+	@Setter
+	private static int max = 0;
+	@Getter
+	@Setter
+	private static Location spawnLocation;
+	@Getter
+	private static List<UUID> players = new ArrayList<>();
+	@Getter
+	@Setter
+	private static List<UUID> oringalPlayers = new ArrayList<>();
+	@Getter
+	private static List<UUID> builders = new ArrayList<>();
+	@Getter
+	private static Map<UUID, String> uuidDB = new HashMap<>();
+	@Getter
+	private static Map<Location, Player> spawns = new HashMap<>();
+	@Getter
+	private static Map<UUID, Integer> kills = new HashMap<>();
+	@Getter
 	private static Map<UUID, PlayerCache> playerCaches = new HashMap<>();
+	@Getter
+	private static List<UUID> inCooldown = new ArrayList<>();
 
-	public List<UUID> inCooldown = new ArrayList<>();
-
-	public PlayerManager() {
-		ins = this;
-	}
-
-	public PlayerCache createCache(final Player player) {
+	public static PlayerCache createCache(final Player player) {
 		return playerCaches.put(player.getUniqueId(), RatingManager.getInstance().getDatabase().createCache(player));
 	}
 
-	public boolean hasCache(UUID uuid) {
+	public static boolean hasCache(UUID uuid) {
 		return playerCaches.containsKey(uuid);
 	}
 
-	public void saveCache(final UUID uuid) {
+	public static void saveCache(final UUID uuid) {
 
 		if (!playerCaches.containsKey(uuid)) {
 			return;
@@ -86,19 +94,19 @@ public class PlayerManager {
 
 	}
 
-	public void removeCache(UUID uuid) {
+	public static void removeCache(UUID uuid) {
 		playerCaches.remove(uuid);
 	}
 
-	public void saveAllCache() {
-		new ArrayList<>(playerCaches.keySet()).forEach(this::saveCache);
+	public static void saveAllCache() {
+		new ArrayList<>(playerCaches.keySet()).forEach(u -> saveCache(u));
 	}
 
-	public PlayerCache getCache(final UUID uuid) {
+	public static PlayerCache getCache(final UUID uuid) {
 		return playerCaches.containsKey(uuid) ? playerCaches.get(uuid) : null;
 	}
 
-	public void setSpec(final Player p) {
+	public static void setSpec(final Player p) {
 		hidePlayer(p);
 		p.setHealth(20.0);
 		p.setGameMode(GameMode.SURVIVAL);
@@ -108,13 +116,13 @@ public class PlayerManager {
 		giveSpecItem(p);
 	}
 
-	public void tpToSpawn(final Player p) {
+	public static void tpToSpawn(final Player p) {
 		if (spawnLocation != null) {
 			p.teleport(spawnLocation);
 		}
 	}
 
-	public void clearInventory(final Player p) {
+	public static void clearInventory(final Player p) {
 		final PlayerInventory i = p.getInventory();
 		p.setHealth(20.0);
 		p.setFoodLevel(20);
@@ -126,13 +134,13 @@ public class PlayerManager {
 
 	}
 
-	public void hidePlayer(final Player p) {
+	public static void hidePlayer(final Player p) {
 		for (final Player p2 : Bukkit.getOnlinePlayers()) {
 			p2.hidePlayer(p);
 		}
 	}
 
-	public void giveWaitingItem(final Player p) {
+	public static void giveWaitingItem(final Player p) {
 		final PlayerInventory i = p.getInventory();
 		i.setItem(0, Lang.iVoteMap);
 		i.setItem(1, Lang.arrowTrails);
@@ -140,7 +148,7 @@ public class PlayerManager {
 		i.setItem(8, Lang.returnToLobby);
 	}
 
-	private void giveSpecItem(final Player p) {
+	private static void giveSpecItem(final Player p) {
 		Bukkit.getScheduler().runTaskLater(SurvivalGames.getInstance(), new Runnable() {
 			PlayerInventory inv = p.getInventory();
 
@@ -153,7 +161,7 @@ public class PlayerManager {
 		}, 2L);
 	}
 
-	public void randomTeleportPlayer(final Player p) {
+	public static void randomTeleportPlayer(final Player p) {
 		final UUID u = p.getUniqueId();
 		if (inCooldown.contains(u))
 			return;
@@ -162,27 +170,27 @@ public class PlayerManager {
 		Bukkit.getScheduler().runTaskLater(SurvivalGames.getInstance(), () -> inCooldown.remove(u), 20);
 	}
 
-	public String getNameByUUID(final UUID u) {
+	public static String getNameByUUID(final UUID u) {
 		return uuidDB.get(u);
 	}
 
-	public void putUuidDb(final Player p) {
+	public static void putUuidDb(final Player p) {
 		uuidDB.put(p.getUniqueId(), p.getName());
 	}
 
-	public boolean isBuilder(final Player p) {
+	public static boolean isBuilder(final Player p) {
 		if (builders.contains(p.getUniqueId()))
 			return true;
 		return false;
 	}
 
-	public boolean isGameingPlayer(final Player p) {
+	public static boolean isGameingPlayer(final Player p) {
 		if (players.contains(p.getUniqueId()))
 			return true;
 		return false;
 	}
 
-	public void giveSetChestItem(final Player p, final String name) {
+	public static void giveSetChestItem(final Player p, final String name) {
 		final ItemStack i = new ItemStack(Material.BLAZE_ROD);
 		final ItemMeta m = i.getItemMeta();
 		m.setDisplayName(name);
@@ -191,16 +199,16 @@ public class PlayerManager {
 
 	}
 
-	public void addKills(final Player p) {
+	public static void addKills(final Player p) {
 		final UUID u = p.getUniqueId();
 		kills.put(u, kills.get(u) + 1);
 	}
 
-	public int getKills(final Player p) {
+	public static int getKills(final Player p) {
 		return getKills(p.getUniqueId());
 	}
 
-	public int getKills(final UUID uuid) {
+	public static int getKills(final UUID uuid) {
 		if (kills.containsKey(uuid))
 			return kills.get(uuid);
 		return 0;

@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.SurvivalGames;
+import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.utils.Utils;
 
 public class GameTask extends BukkitRunnable
@@ -19,7 +20,7 @@ public class GameTask extends BukkitRunnable
 		timeStr = timeLeft / 60 + ":" + timeLeft % 60;
 		if (timeLeft < 1) {
 			this.cancel();
-			SurvivalGames.getGameManager().startDeathMatch();
+			GameManager.startDeathMatch();
 			return;
 		}
 		if (GameStatus.isFinished()) {
@@ -31,7 +32,7 @@ public class GameTask extends BukkitRunnable
 			Bukkit.getOnlinePlayers()
 			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "gameCount")
 					.replaceAll("<time>", String.valueOf(timeLeft) + " ¡±c" +
-			SurvivalGames.getLanguage().translate(pl, "seconds"))));
+							SurvivalGames.getLanguage().translate(pl, "seconds"))));
 			return;
 		}
 		if (timeLeft % 300 == 0 || timeLeft == 180 || timeLeft == 120 || timeLeft == 60) {
@@ -39,7 +40,7 @@ public class GameTask extends BukkitRunnable
 			Bukkit.getOnlinePlayers()
 			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "gameCount")
 					.replaceAll("<time>", String.valueOf(timeLeft / 60) + " ¡±c" +
-			SurvivalGames.getLanguage().translate(pl, "minutes"))));
+							SurvivalGames.getLanguage().translate(pl, "minutes"))));
 			return;
 		}
 

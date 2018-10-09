@@ -33,6 +33,7 @@ import mitw.survivalgames.arena.Arena;
 import mitw.survivalgames.guis.StatsGUI;
 import mitw.survivalgames.guis.VoteGUI;
 import mitw.survivalgames.manager.ArenaManager;
+import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.manager.PlayerManager;
 import mitw.survivalgames.ratings.PlayerCache;
 import mitw.survivalgames.utils.Utils;
@@ -44,34 +45,36 @@ public class PlayerListener implements Listener {
 	public void onDeath(final PlayerDeathEvent e) {
 		final Player p = e.getEntity();
 		e.setDeathMessage(null);
-		if (!SurvivalGames.getPlayerManager().isGameingPlayer(p))
+		if (!PlayerManager.isGameingPlayer(p))
 			return;
-		SurvivalGames.getPlayerManager().setSpec(p);
+		PlayerManager.setSpec(p);
 		p.getInventory().setHeldItemSlot(3);
-		PlayerManager.players.remove(p.getUniqueId());
+		PlayerManager.getPlayers().remove(p.getUniqueId());
 		p.getWorld().strikeLightningEffect(p.getLocation());
 		if (p.getKiller() != null) {
 			final Player k = p.getKiller();
 			final DecimalFormat df = new DecimalFormat("##.0");
 			final String kHeart = df.format(k.getHealth() / 2D);
-			SurvivalGames.getPlayerManager().addKills(k);
+			PlayerManager.addKills(k);
 			p.sendMessage(SurvivalGames.getLanguage().translate(p, "youGotKillByS1").replaceAll("<player>", k.getName()).replaceAll("<heart>", kHeart));
 			k.sendMessage(SurvivalGames.getLanguage().translate(k, "youKills1").replaceAll("<player>", p.getName()));
 
 			final int ratingAdded = SurvivalGames.getRandom().nextInt(4, 6);
-			final PlayerCache killerCache = SurvivalGames.getPlayerManager().getCache(k.getUniqueId());
+			final PlayerCache killerCache = PlayerManager.getCache(k.getUniqueId());
 			killerCache.setRating(killerCache.getRating() + ratingAdded);
 
 			k.sendMessage(SurvivalGames.getLanguage().translate(k, "ratingAdded") + ratingAdded);
 		}
-		final PlayerCache playerCache = SurvivalGames.getPlayerManager().getCache(p.getUniqueId());
+		final PlayerCache playerCache = PlayerManager.getCache(p.getUniqueId());
 		if (playerCache.getRating() > 1200) {
 			final int ratingRemove = SurvivalGames.getRandom().nextInt(2, 3);
 			p.sendMessage(SurvivalGames.getLanguage().translate(p, "ratingRemoved") + ratingRemove + " " + SurvivalGames.getLanguage().translate(p, "ratingRemoveReason"));
 			playerCache.setRating(playerCache.getRating() - ratingRemove);
 		}
-		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "s1Death").replaceAll("<player>", p.getName()).replaceAll("<size>", String.valueOf(PlayerManager.players.size()))));
-		SurvivalGames.getGameManager().checkWin();
+		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "s1Death")
+				.replaceAll("<player>", p.getName())
+				.replaceAll("<size>", String.valueOf(PlayerManager.getPlayers().size()))));
+		GameManager.checkWin();
 	}
 
 	@EventHandler
@@ -79,7 +82,7 @@ public class PlayerListener implements Listener {
 		if (!(e.getEntity() instanceof Player))
 			return;
 		final Player p = (Player) e.getEntity();
-		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
+		if (!GameStatus.isGaming(true) || !PlayerManager.isGameingPlayer(p)) {
 			e.setCancelled(true);
 		}
 
@@ -90,7 +93,7 @@ public class PlayerListener implements Listener {
 		if (!(e.getDamager() instanceof Player))
 			return;
 		final Player damager = (Player) e.getDamager();
-		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(damager)) {
+		if (!GameStatus.isGaming(true) || !PlayerManager.isGameingPlayer(damager)) {
 			e.setCancelled(true);
 			return;
 		}
@@ -98,7 +101,7 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onPickup(final PlayerPickupItemEvent e) {
-		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer())) {
+		if (!GameStatus.isGaming(true) || !PlayerManager.isGameingPlayer(e.getPlayer())) {
 			e.setCancelled(true);
 		}
 
@@ -106,7 +109,7 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onDrop(final PlayerDropItemEvent e) {
-		if (!GameStatus.isGaming(true) || !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer())) {
+		if (!GameStatus.isGaming(true) || !PlayerManager.isGameingPlayer(e.getPlayer())) {
 			e.setCancelled(true);
 		}
 	}
@@ -120,12 +123,12 @@ public class PlayerListener implements Listener {
 			final Location l = e.getBlock().getLocation();
 			final Player p = e.getPlayer();
 			final UUID u = p.getUniqueId();
-			a = ArenaManager.editors.get(u);
-			if (!ArenaManager.editors.get(u).tir2Chests.contains(l)) {
-				SurvivalGames.getSgChestManager().setTir2(l, ArenaManager.editors.get(u));
+			a = ArenaManager.getEditors().get(u);
+			if (!a.getTir2Chests().contains(l)) {
+				SurvivalGames.getSgChestManager().setTir2(l, a);
 				p.sendMessage(Utils.colored("&a成功新增高等箱子,目前共有 &f" + a.getTir2Chests().size() + "&a 個高等箱子"));
 			} else {
-				SurvivalGames.getSgChestManager().removeTir2(l, ArenaManager.editors.get(u));
+				SurvivalGames.getSgChestManager().removeTir2(l, a);
 				p.sendMessage(Utils.colored("&c成功移除高等箱子,目前剩下 &f" + a.getTir2Chests().size() + "&a 個高等箱子"));
 			}
 			return;
@@ -135,19 +138,19 @@ public class PlayerListener implements Listener {
 			final Location l = e.getBlock().getLocation();
 			final Player p = e.getPlayer();
 			final UUID u = p.getUniqueId();
-			a = ArenaManager.editors.get(u);
-			if (!ArenaManager.editors.get(u).centerChests.contains(l)) {
+			a = ArenaManager.getEditors().get(u);
+			if (!a.getCenterChests().contains(l)) {
 				SurvivalGames.getSgChestManager().setCenter(l, a);
-				p.sendMessage(Utils.colored("&e成功新增中心點箱子,目前共有 &f" + a.centerChests.size() + "&e 個高等箱子"));
+				p.sendMessage(Utils.colored("&e成功新增中心點箱子,目前共有 &f" + a.getCenterChests().size() + "&e 個高等箱子"));
 			} else {
-				SurvivalGames.getSgChestManager().removeCenterTir2(l, ArenaManager.editors.get(u));
-				p.sendMessage(Utils.colored("&e成功移除中心點箱子,目前剩下 &f" + a.centerChests.size() + "&e 個高等箱子"));
+				SurvivalGames.getSgChestManager().removeCenterTir2(l, a);
+				p.sendMessage(Utils.colored("&e成功移除中心點箱子,目前剩下 &f" + a.getCenterChests().size() + "&e 個高等箱子"));
 			}
 			return;
 		}
 
-		if ((!GameStatus.isGaming(true) || !ArenaManager.canBreak.contains(b.getType())
-				|| !SurvivalGames.getPlayerManager().isGameingPlayer(e.getPlayer())) && !SurvivalGames.getPlayerManager().isBuilder(e.getPlayer())) {
+		if ((!GameStatus.isGaming(true) || !ArenaManager.getCanBreak().contains(b.getType())
+				|| !PlayerManager.isGameingPlayer(e.getPlayer())) && !PlayerManager.isBuilder(e.getPlayer())) {
 			e.setCancelled(true);
 		}
 	}
@@ -160,12 +163,12 @@ public class PlayerListener implements Listener {
 			final ItemStack i = e.getItem();
 			if (i.equals(Lang.specTp)) {
 				e.setCancelled(true);
-				SurvivalGames.getPlayerManager().randomTeleportPlayer(p);
+				PlayerManager.randomTeleportPlayer(p);
 				return;
 			}
 			if (i.equals(Lang.returnToLobby)) {
 				e.setCancelled(true);
-				SurvivalGames.getGameManager().sendToLobbyServer(p);
+				GameManager.sendToLobbyServer(p);
 				return;
 			}
 			if (i.equals(Lang.arrowTrails)) {
@@ -183,25 +186,25 @@ public class PlayerListener implements Listener {
 				return;
 			}
 			if (i.equals(Lang.statsItem)) {
-				new StatsGUI(p, SurvivalGames.getPlayerManager().getCache(p.getUniqueId())).o(p);
+				new StatsGUI(p, PlayerManager.getCache(p.getUniqueId())).o(p);
 				return;
 			}
 
 		}
 		if (a.equals(Action.RIGHT_CLICK_BLOCK) || a.equals(Action.RIGHT_CLICK_AIR))
-			if (!SurvivalGames.getPlayerManager().isGameingPlayer(p) && !PlayerManager.builders.contains(p.getUniqueId())) {
+			if (!PlayerManager.isGameingPlayer(p) && !PlayerManager.getBuilders().contains(p.getUniqueId())) {
 				e.setCancelled(true);
 				return;
 			}
 		if (a.equals(Action.LEFT_CLICK_BLOCK) || a.equals(Action.RIGHT_CLICK_BLOCK))
 			if ((e.getClickedBlock().getType().equals(Material.FIRE)) && !GameStatus.isGaming(true)
-					&& !SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
+					&& !PlayerManager.isGameingPlayer(p)) {
 				e.setCancelled(true);
 				return;
 			}
 		if (a.equals(Action.PHYSICAL)) {
 			final Material m = e.getClickedBlock().getType();
-			if (m == Material.SOIL || (!SurvivalGames.getPlayerManager().isGameingPlayer(p) && ArenaManager.specCantUse.contains(m))) {
+			if (m == Material.SOIL || (!PlayerManager.isGameingPlayer(p) && ArenaManager.getSpecCantUse().contains(m))) {
 				e.setCancelled(true);
 			}
 			return;
@@ -216,21 +219,21 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onHungerLose(final FoodLevelChangeEvent e) {
 		final Player p = (Player) e.getEntity();
-		if (!PlayerManager.players.contains(p.getUniqueId())) {
+		if (!PlayerManager.getBuilders().contains(p.getUniqueId())) {
 			e.setFoodLevel(20);
 		}
 	}
 
 	@EventHandler
 	public void onBucketEmpty(final PlayerBucketEmptyEvent e) {
-		if (!PlayerManager.builders.contains(e.getPlayer().getUniqueId())) {
+		if (!PlayerManager.getBuilders().contains(e.getPlayer().getUniqueId())) {
 			e.setCancelled(true);
 		}
 	}
 
 	@EventHandler
 	public void onBlockPlace(final BlockPlaceEvent e) {
-		if (SurvivalGames.getPlayerManager().isBuilder(e.getPlayer()))
+		if (PlayerManager.isBuilder(e.getPlayer()))
 			return;
 		if (e.getBlock().getType().equals(Material.FIRE)) {
 			final Player p = e.getPlayer();

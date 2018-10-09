@@ -1,11 +1,15 @@
 package mitw.survivalgames;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import lombok.Getter;
+import mitw.survivalgames.commands.ArenaCommand;
 import mitw.survivalgames.commands.StatsCommand;
 import mitw.survivalgames.commands.SurvivalGamesCommand;
 import mitw.survivalgames.handler.SGChatHandler;
@@ -72,16 +76,8 @@ public class SurvivalGames extends JavaPlugin {
 		return FileManager.ins;
 	}
 
-	public static GameManager getGameManager() {
-		return GameManager.ins;
-	}
-
-	public static PlayerManager getPlayerManager() {
-		return PlayerManager.ins;
-	}
-
 	public static ArenaManager getArenaManager() {
-		return ArenaManager.ins;
+		return ArenaManager.getIns();
 	}
 
 	public static ItemBuilder getItemBuilder() {
@@ -114,11 +110,25 @@ public class SurvivalGames extends JavaPlugin {
 	}
 
 	private void registerCommands() {
+		registerCommand(new ArenaCommand());
 		Arrays.asList(
 				new SurvivalGamesCommand(),
 				new StatsCommand()
 				)
 		.forEach(command -> MinecraftServer.getServer().server.getCommandMap().register("mitwsg", command));
+	}
+
+	public static void registerCommand(Command command) {
+		try {
+			final Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+			commandMapField.setAccessible(true);
+
+			final CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
+			commandMap.register(command.getLabel(), command);
+
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*

@@ -1,9 +1,7 @@
-main: mitw.survivalgames.SurvivalGames
+main: ${mainClass}
 name: MitwSG
-version: 1.2
-depend: [Mitw]
+version: ${project.version}
+author: ${author} 
+depend: [Mitw]  
 commands:
   sg:
-  
-  
-  

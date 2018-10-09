@@ -16,7 +16,7 @@ public class CustomMovementHandler implements MovementHandler {
 		if (to.getBlockX() == from.getBlockX() && to.getBlockY() == from.getBlockY()
 				&& to.getBlockZ() == from.getBlockZ())
 			return;
-		if ((GameStatus.isStarting() || GameStatus.isDmStarting()) && PlayerManager.players.contains(player.getUniqueId())) {
+		if ((GameStatus.isStarting() || GameStatus.isDmStarting()) && PlayerManager.getPlayers().contains(player.getUniqueId())) {
 
 			final double x = Math.round(from.getX()) + 0.5D;
 			final double z = Math.round(from.getX()) + 0.5D;

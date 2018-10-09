@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.SurvivalGames;
+import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.manager.PlayerManager;
 import mitw.survivalgames.utils.Utils;
 
@@ -19,7 +20,7 @@ public class StartTask extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		if (!SurvivalGames.getGameManager().canStart()) {
+		if (!GameManager.canStart()) {
 			Bukkit.shutdown();
 			this.cancel();
 		}
@@ -27,13 +28,13 @@ public class StartTask extends BukkitRunnable {
 		if (timeLeft < 1) {
 			GameStatus.setState(GameStatus.GAMING);
 			final PotionEffect eff = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 15 * 20, 255);
-			for (final UUID u : PlayerManager.players)
+			for (final UUID u : PlayerManager.getPlayers())
 				eff.apply(Bukkit.getPlayer(u));
-			PlayerManager.oringalPlayers = new ArrayList<>(PlayerManager.players);
+			PlayerManager.setOringalPlayers(new ArrayList<>(PlayerManager.getPlayers()));
 			new GameTask().runTaskTimer(SurvivalGames.getInstance(), 0, 20);
 			Utils.playSoundAll(Sound.ENDERDRAGON_GROWL);
 			Bukkit.getOnlinePlayers().forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "gameStarted")));
-			SurvivalGames.getGameManager().checkWin();
+			GameManager.checkWin();
 			this.cancel();
 			return;
 		} else if (timeLeft <= 5 || timeLeft == 10) {

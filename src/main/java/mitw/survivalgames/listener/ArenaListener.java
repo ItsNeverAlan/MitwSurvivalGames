@@ -17,6 +17,7 @@ import org.bukkit.inventory.Inventory;
 import mitw.survivalgames.GameStatus;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.manager.ArenaManager;
+import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.manager.PlayerManager;
 import mitw.survivalgames.manager.SgChestManager;
 
@@ -25,10 +26,10 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onMove(final PlayerMoveEvent e) {
 		final Player p = e.getPlayer();
-		if (SurvivalGames.getPlayerManager().isBuilder(p))
+		if (PlayerManager.isBuilder(p))
 			return;
-		if ((GameStatus.isStarting() || GameStatus.isDmStarting()) && PlayerManager.players.contains(p.getUniqueId())
-				&& !SurvivalGames.getGameManager().sameBlock(e.getTo(), e.getFrom())) {
+		if ((GameStatus.isStarting() || GameStatus.isDmStarting()) && PlayerManager.getPlayers().contains(p.getUniqueId())
+				&& !GameManager.sameBlock(e.getTo(), e.getFrom())) {
 			e.setTo(e.getFrom());
 			return;
 		}
@@ -47,11 +48,11 @@ public class ArenaListener implements Listener {
 			SgChestManager.opened.add(l);
 			final Inventory i = c.getBlockInventory();
 			i.clear();
-			if (ArenaManager.usingArena.tir2Chests.contains(l)) {
+			if (ArenaManager.getUsingArena().getTir2Chests().contains(l)) {
 				SurvivalGames.getSgChestManager().putTir2Item(i);
 				return;
 			}
-			if (ArenaManager.usingArena.centerChests.contains(l)) {
+			if (ArenaManager.getUsingArena().getCenterChests().contains(l)) {
 				SurvivalGames.getSgChestManager().putCenteritem(i);
 				return;
 			}
@@ -67,7 +68,7 @@ public class ArenaListener implements Listener {
 			final Inventory i = c.getInventory();
 			i.clear();
 			for (int a = 0; a < 2; a++)
-				if (ArenaManager.usingArena.tir2Chests.contains(l)) {
+				if (ArenaManager.getUsingArena().getTir2Chests().contains(l)) {
 					SurvivalGames.getSgChestManager().putTir2Item(i);
 				} else {
 					SurvivalGames.getSgChestManager().putTir1Item(i);
@@ -81,7 +82,7 @@ public class ArenaListener implements Listener {
 	public void onBreakBoat(final VehicleDestroyEvent e) {
 		if (e.getVehicle() instanceof Boat && e.getAttacker() instanceof Player) {
 			final Player p = (Player) e.getAttacker();
-			if (!SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
+			if (!PlayerManager.isGameingPlayer(p)) {
 				e.setCancelled(true);
 			}
 		}
@@ -91,7 +92,7 @@ public class ArenaListener implements Listener {
 	public void onRide(final VehicleEnterEvent e) {
 		if (e.getVehicle() instanceof Boat && e.getEntered() instanceof Player) {
 			final Player p = (Player) e.getEntered();
-			if (!SurvivalGames.getPlayerManager().isGameingPlayer(p)) {
+			if (!PlayerManager.isGameingPlayer(p)) {
 				e.setCancelled(true);
 			}
 		}

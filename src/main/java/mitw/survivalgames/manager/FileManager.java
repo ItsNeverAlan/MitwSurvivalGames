@@ -69,10 +69,11 @@ public class FileManager {
 
 	public void writeNewArena(String name) {
 		final ArrayList<String> empty = new ArrayList<>();
+		getClocation().set("Arenas." + name + ".displayName", "");
 		getClocation().set("Arenas." + name + ".spawnPoints", empty.toArray());
 		getClocation().set("Arenas." + name + ".centerChest", empty.toArray());
 		getClocation().set("Arenas." + name + ".Tir2s", empty.toArray());
-		getClocation().set("Arenas." + name + ".center", null);
+		getClocation().set("Arenas." + name + ".center", "");
 		saveLocationConfig();
 	}
 
@@ -84,7 +85,7 @@ public class FileManager {
 
 	private void loadLobby() {
 		if (getClocation().getString("Lobby") != null)
-			PlayerManager.spawnLocation = (Utils.StrToLocPitch(getClocation().getString("Lobby")));
+			PlayerManager.setSpawnLocation(Utils.StrToLocPitch(getClocation().getString("Lobby")));
 	}
 
 	private void loadArenas() {
@@ -94,8 +95,9 @@ public class FileManager {
 			/* load world first to let arena location can be cast */
 			final Arena a = new Arena();
 			a.setName(arena);
+			a.setDisplayName(getClocation().getString("Arenas." + arena + ".displayName", a.getName()));
 			/* load arenas loacation */
-			ArenaManager.arenas.add(a);
+			ArenaManager.getArenas().add(a);
 		}
 
 	}

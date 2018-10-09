@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,20 +13,31 @@ import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import lombok.Getter;
+import lombok.Setter;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.arena.Arena;
 import mitw.survivalgames.utils.Utils;
 
+@Getter
 public class ArenaManager {
-	public static ArenaManager ins;
-	public static ArrayList<Material> canBreak = new ArrayList<>();
-	public static ArrayList<Material> specCantUse = new ArrayList<>();
-	public static HashMap<UUID, Arena> editors = new HashMap<>();
-	public static HashMap<UUID, Arena> votes = new HashMap<>();
-	public static ArrayList<UUID> voteRandom = new ArrayList<>();
-	public static ArrayList<Arena> arenas = new ArrayList<>();
-	public static Arena usingArena;
-	public static String usingArenaName;
+	@Getter
+	private static ArenaManager ins;
+	@Getter
+	private static ArrayList<Material> canBreak = new ArrayList<>();
+	@Getter
+	private static ArrayList<Material> specCantUse = new ArrayList<>();
+	@Getter
+	private static HashMap<UUID, Arena> editors = new HashMap<>();
+	@Getter
+	private static HashMap<UUID, Arena> votes = new HashMap<>();
+	@Getter
+	private static ArrayList<UUID> voteRandom = new ArrayList<>();
+	@Getter
+	private static ArrayList<Arena> arenas = new ArrayList<>();
+	@Getter
+	@Setter
+	private static Arena usingArena;
 
 	public ArenaManager() {
 		ins = this;
@@ -33,21 +45,25 @@ public class ArenaManager {
 		setupSpecCantuse();
 	}
 
-	public void reFillChest() {
+	public static void reFillChest() {
 		SgChestManager.opened.clear();
 	}
 
-	public void createNewArena(String name) {
+	public static void createNewArena(String name) {
 		final Arena a = new Arena();
 		a.setName(name);
+		a.setDisplayName(name);
 		arenas.add(a);
-		Bukkit.createWorld(new WorldCreator(name));
+		final World w = Bukkit.createWorld(new WorldCreator(name));
 		/* debug */
-		a.setWorld(Bukkit.getWorld(name));
-		a.setCenter(a.getWorld().getSpawnLocation());
+		final Chunk c = w.getSpawnLocation().getChunk();
+		if (!c.isLoaded())
+			c.load(true);
+		a.setWorld(w);
+		a.setCenter(w.getSpawnLocation());
 	}
 
-	public Arena getArena(String s) {
+	public static Arena getArena(String s) {
 		for (final Arena a : arenas) {
 			if (a.getName().toLowerCase().equals(s.toLowerCase()))
 				return a;
@@ -55,7 +71,7 @@ public class ArenaManager {
 		return null;
 	}
 
-	public void loadArena(Arena a) {
+	public static void loadArena(Arena a) {
 		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "generatingWorld")));
 		final String arenaName = a.getName();
 		final FileConfiguration c = SurvivalGames.getFileManager().getClocation();

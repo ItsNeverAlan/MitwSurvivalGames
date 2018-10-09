@@ -1,6 +1,7 @@
 package mitw.survivalgames.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,35 +18,33 @@ public class ItemBuilder {
 	}
 
 	public ItemStack itemWithName(Material mat, String name) {
-		ItemStack i = new ItemStack(mat);
-		ItemMeta m = i.getItemMeta();
+		final ItemStack i = new ItemStack(mat);
+		final ItemMeta m = i.getItemMeta();
 		m.setDisplayName(Utils.colored(name));
 		i.setItemMeta(m);
 		return i;
 	}
 
 	public ItemStack createVoteMapItem(Material mat, Arena a) {
-		ItemStack i = new ItemStack(mat);
-		ItemMeta m = i.getItemMeta();
+		final ItemStack i = new ItemStack(mat);
+		final ItemMeta m = i.getItemMeta();
 		int votes = 0;
-		for (Arena arena : ArenaManager.votes.values()) {
+		for (final Arena arena : ArenaManager.getVotes().values()) {
 			if (arena.equals(a))
 				votes++;
 		}
-		m.setDisplayName(a.getName());
-		ArrayList<String> lore = new ArrayList<>();
-		lore.add("”fヘ玡布计: ”6" + votes);
-		m.setLore(lore);
+		m.setDisplayName(Common.colored(a.getDisplayName()));
+		m.setLore(Arrays.asList("”fヘ玡布计: ”6" + votes));
 		i.setItemMeta(m);
 		return i;
 	}
 
 	public ItemStack createRandomMap(Material mat, String name) {
-		ItemStack i = new ItemStack(mat);
-		ItemMeta m = i.getItemMeta();
-		int votes = ArenaManager.voteRandom.size();
+		final ItemStack i = new ItemStack(mat);
+		final ItemMeta m = i.getItemMeta();
+		final int votes = ArenaManager.getVoteRandom().size();
 		m.setDisplayName(Utils.colored(name));
-		ArrayList<String> lore = new ArrayList<>();
+		final ArrayList<String> lore = new ArrayList<>();
 		lore.add("”fヘ玡布计: ”6" + votes);
 		m.setLore(lore);
 		i.setItemMeta(m);

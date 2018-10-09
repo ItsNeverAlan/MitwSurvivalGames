@@ -96,12 +96,12 @@ public class SgChestManager {
 	}
 
 	public void setTir2(Location l, Arena a) {
-		a.tir2Chests.add(l);
+		a.getTir2Chests().add(l);
 		a.saveTir2Chests();
 	}
 
 	public void removeTir2(Location l, Arena a) {
-		a.tir2Chests.remove(l);
+		a.getTir2Chests().remove(l);
 		a.saveTir2Chests();
 	}
 
@@ -111,7 +111,7 @@ public class SgChestManager {
 	}
 
 	public void removeCenterTir2(Location l, Arena a) {
-		a.centerChests.remove(l);
+		a.getCenterChests().remove(l);
 		a.saveCenterChest();
 	}
 

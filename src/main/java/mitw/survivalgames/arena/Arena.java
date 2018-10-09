@@ -7,18 +7,24 @@ import java.util.stream.Collectors;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.utils.Utils;
 
-@Data
+@Getter
 public class Arena {
 
-	public List<Location> spawnPoints = new ArrayList<>();
-	public List<Location> tir2Chests = new ArrayList<>();
-	public List<Location> centerChests = new ArrayList<>();
-	public Location center;
+	private final List<Location> spawnPoints = new ArrayList<>();
+	private final List<Location> tir2Chests = new ArrayList<>();
+	private final List<Location> centerChests = new ArrayList<>();
+	@Setter
+	private Location center;
+	@Setter
 	private String name;
+	@Setter
+	private String displayName;
+	@Setter
 	private World world;
 
 	public void addSpawn(final Location l) {
@@ -51,6 +57,11 @@ public class Arena {
 
 	public void saveCenterChest() {
 		SurvivalGames.getFileManager().getClocation().set("Arenas." + name + ".centerChest", Utils.locToStringList(centerChests).toArray());
+		SurvivalGames.getFileManager().saveLocationConfig();
+	}
+
+	public void saveDisplayName() {
+		SurvivalGames.getFileManager().getClocation().set("Arenas." + name + ".displayName", displayName);
 		SurvivalGames.getFileManager().saveLocationConfig();
 	}
 

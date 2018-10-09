@@ -8,6 +8,7 @@ import me.skymc.taboolib.mysql.builder.SQLColumn;
 import me.skymc.taboolib.mysql.builder.SQLColumnType;
 import me.skymc.taboolib.mysql.builder.SQLTable;
 import mitw.survivalgames.SurvivalGames;
+import mitw.survivalgames.manager.PlayerManager;
 import net.development.mitw.Mitw;
 import net.development.mitw.database.Database;
 import net.development.mitw.utils.FastUUID;
@@ -41,8 +42,8 @@ public class RatingDatabase {
 
 	public PlayerCache createCache(final Player player) {
 
-		if (SurvivalGames.getPlayerManager().hasCache(player.getUniqueId())) {
-			return SurvivalGames.getPlayerManager().getCache(player.getUniqueId());
+		if (PlayerManager.hasCache(player.getUniqueId())) {
+			return PlayerManager.getCache(player.getUniqueId());
 		}
 
 		final PlayerCache playerCache = new PlayerCache();
@@ -94,7 +95,7 @@ public class RatingDatabase {
 		sqlTable.executeUpdate("UPDATE `" + TABLE_NAME + "` SET `name` = ?, `wins` = ?, `kills` = ?, `deaths` = ?, `rating` = ? WHERE `uuid` = ?;")
 		.dataSource(database.getDataSource())
 		.statement(s -> {
-			s.setString(1, SurvivalGames.getPlayerManager().getNameByUUID(playerCache.getUuid()));
+			s.setString(1, PlayerManager.getNameByUUID(playerCache.getUuid()));
 			s.setInt(2, playerCache.getWins());
 			s.setInt(3, playerCache.getKills());
 			s.setInt(4, playerCache.getDeaths());

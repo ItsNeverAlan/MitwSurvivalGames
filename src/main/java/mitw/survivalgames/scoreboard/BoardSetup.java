@@ -70,7 +70,7 @@ public class BoardSetup {
 	}
 
 	public static String var(final Player p, String s) {
-		final PlayerCache playerCache = SurvivalGames.getPlayerManager().getCache(p.getUniqueId());
+		final PlayerCache playerCache = PlayerManager.getCache(p.getUniqueId());
 		s = s.replaceAll("<rating>", playerCache.getRating() + "");
 		switch (GameStatus.getState()) {
 		case WAITING:
@@ -80,19 +80,19 @@ public class BoardSetup {
 			return s.replaceAll("<players>", "" + Bukkit.getOnlinePlayers().size()).replaceAll("&", "¡±")
 					.replaceAll("<starting>", StartTask.timeLeft + "").replaceAll("<server>", Lang.serverName);
 		case GAMING:
-			return s.replaceAll("<players>", "" + PlayerManager.players.size()).replaceAll("&", "¡±")
+			return s.replaceAll("<players>", "" + PlayerManager.getPlayers().size()).replaceAll("&", "¡±")
 					.replaceAll("<time>", Utils.timeFormat(GameTask.timeLeft))
-					.replaceAll("<max>", PlayerManager.max + "").replaceAll("<arena>", ArenaManager.usingArenaName + "")
-					.replaceAll("<kills>", String.valueOf(SurvivalGames.getPlayerManager().getKills(p))).replaceAll("<server>", Lang.serverName);
+					.replaceAll("<max>", PlayerManager.getMax() + "").replaceAll("<arena>", ArenaManager.getUsingArena().getName())
+					.replaceAll("<kills>", String.valueOf(PlayerManager.getKills(p))).replaceAll("<server>", Lang.serverName);
 		case FINISH:
 			return s.replaceAll("<player>", winnerName).replaceAll("<playerKills>", winnerKills).replaceAll("<time>", Utils.timeFormat(GameTask.timeLeft));
 		case DEATHMATCH:
-			return s.replaceAll("<players>", "" + PlayerManager.players.size()).replaceAll("&", "¡±")
+			return s.replaceAll("<players>", "" + PlayerManager.getPlayers().size()).replaceAll("&", "¡±")
 					.replaceAll("<time>", (DeathMatchTask.a <= 0 ? Utils.timeFormat(0) : Utils.timeFormat(DeathMatchTask.a)))
-					.replaceAll("<max>", PlayerManager.max + "").replaceAll("<arena>", ArenaManager.usingArenaName + "")
-					.replaceAll("<kills>", String.valueOf(SurvivalGames.getPlayerManager().getKills(p))).replaceAll("<server>", Lang.serverName);
+					.replaceAll("<max>", PlayerManager.getMax() + "").replaceAll("<arena>", ArenaManager.getUsingArena().getName())
+					.replaceAll("<kills>", String.valueOf(PlayerManager.getKills(p))).replaceAll("<server>", Lang.serverName);
 		case DMSTARTING:
-			return s.replaceAll("<players>", "" + PlayerManager.players.size()).replaceAll("&", "¡±").replaceAll("<starting>", DmStartTask.count + "")
+			return s.replaceAll("<players>", "" + PlayerManager.getPlayers().size()).replaceAll("&", "¡±").replaceAll("<starting>", DmStartTask.count + "")
 					.replaceAll("<server>", Lang.serverName);
 		}
 		return s;

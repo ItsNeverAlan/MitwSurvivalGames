@@ -14,6 +14,7 @@ public class Lang {
 	public static String prefix = Utils.colored("&7[&6&lMitw&f&lSG&7]&f ");
 	public static String Title = "&6&lMitw &7| &fSG";
 	public static String deathMatchTitle = "&c&lMitw &7| &fSG";
+	public static String ADMIN_PERM = "sg.admin";
 
 	public static ItemStack specTp, playAnotherGame, returnToLobby, iVoteMap, RandomMap, arrowTrails, statsItem;
 

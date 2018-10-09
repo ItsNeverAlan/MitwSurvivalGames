@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/java=MS950
+encoding//src/main/java/mitw/survivalgames/commands/PlayerCommands.java=UTF-8
+encoding//src/main/java/mitw/survivalgames/commands/StaffCommands.java=UTF-8
 encoding//src/main/resources=MS950
 encoding/<project>=MS950

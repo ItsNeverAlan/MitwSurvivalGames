@@ -14,7 +14,7 @@ public class DmStartTask extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		SurvivalGames.getGameManager().getWinner();
+		GameManager.getWinner();
 		if (GameStatus.isFinished()) {
 			this.cancel();
 			return;
