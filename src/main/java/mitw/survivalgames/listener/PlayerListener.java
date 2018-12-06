@@ -67,7 +67,7 @@ public class PlayerListener implements Listener {
 		}
 		final PlayerCache playerCache = PlayerManager.getCache(p.getUniqueId());
 		if (playerCache.getRating() > 1200) {
-			final int ratingRemove = SurvivalGames.getRandom().nextInt(2, 3);
+			final int ratingRemove = SurvivalGames.getRandom().nextInt(5, 9);
 			p.sendMessage(SurvivalGames.getLanguage().translate(p, "ratingRemoved") + ratingRemove + " " + SurvivalGames.getLanguage().translate(p, "ratingRemoveReason"));
 			playerCache.setRating(playerCache.getRating() - ratingRemove);
 		}

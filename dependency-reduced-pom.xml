@@ -55,15 +55,19 @@
       <systemPath>${project.basedir}/libs/Mitw-1.0.0.jar</systemPath>
     </dependency>
     <dependency>
-      <groupId>top.potl.spigot</groupId>
-      <artifactId>nspigot</artifactId>
+      <groupId>mitw.spigot</groupId>
+      <artifactId>nspigot-2.0E</artifactId>
       <version>1.8.8-R0.1-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/libs/ySpigot2.jar</systemPath>
+      <systemPath>${project.basedir}/libs/nspigot-2.0E.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
+    <mainClass>mitw.survivalgames.SurvivalGames</mainClass>
+    <author>LU__LU,LeeGod</author>
+    <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>MS950</project.build.sourceEncoding>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>
 
