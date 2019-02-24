@@ -78,13 +78,7 @@
 			<systemPath>${project.basedir}/libs/nspigot-2.0E.jar</systemPath>
 		</dependency>
 		
-		<dependency>
-			<groupId>spigot</groupId>
-			<artifactId>server</artifactId>
-			<version>1</version>
-			<scope>system</scope>
-			<systemPath>C:\Users\LU__LU\Desktop\伺服器\FFA Test\spigot.jar</systemPath>
-		</dependency>
+		
 
 		
 	</dependencies>
