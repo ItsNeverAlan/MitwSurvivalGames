@@ -41,8 +41,6 @@ public class PlayerManager {
 	@Getter
 	private static List<UUID> builders = new ArrayList<>();
 	@Getter
-	private static Map<UUID, String> uuidDB = new HashMap<>();
-	@Getter
 	private static Map<Location, Player> spawns = new HashMap<>();
 	@Getter
 	private static Map<UUID, Integer> kills = new HashMap<>();
@@ -55,19 +53,17 @@ public class PlayerManager {
 		return playerCaches.put(player.getUniqueId(), RatingManager.getInstance().getDatabase().createCache(player));
 	}
 
-	public static boolean hasCache(UUID uuid) {
+	public static boolean hasCache(final UUID uuid) {
 		return playerCaches.containsKey(uuid);
 	}
 
 	public static void saveCache(final UUID uuid) {
 
-		if (!playerCaches.containsKey(uuid)) {
+		if (!playerCaches.containsKey(uuid))
 			return;
-		}
 
-		if (!oringalPlayers.contains(uuid)) {
+		if (!oringalPlayers.contains(uuid))
 			return;
-		}
 
 		oringalPlayers.remove(uuid);
 		final PlayerCache playerCache = playerCaches.get(uuid);
@@ -94,7 +90,7 @@ public class PlayerManager {
 
 	}
 
-	public static void removeCache(UUID uuid) {
+	public static void removeCache(final UUID uuid) {
 		playerCaches.remove(uuid);
 	}
 
@@ -109,6 +105,7 @@ public class PlayerManager {
 	public static void setSpec(final Player p) {
 		hidePlayer(p);
 		p.setHealth(20.0);
+		p.setFoodLevel(20);
 		p.setGameMode(GameMode.SURVIVAL);
 		clearInventory(p);
 		p.setAllowFlight(true);
@@ -136,7 +133,12 @@ public class PlayerManager {
 
 	public static void hidePlayer(final Player p) {
 		for (final Player p2 : Bukkit.getOnlinePlayers()) {
+			if (p == p2)
+				return;
 			p2.hidePlayer(p);
+			if (!isGameingPlayer(p2)) {
+				p.hidePlayer(p2);
+			}
 		}
 	}
 
@@ -168,14 +170,6 @@ public class PlayerManager {
 		p.teleport(Bukkit.getPlayer(players.get(SurvivalGames.getRandom().nextInt(players.size()))));
 		inCooldown.add(u);
 		Bukkit.getScheduler().runTaskLater(SurvivalGames.getInstance(), () -> inCooldown.remove(u), 20);
-	}
-
-	public static String getNameByUUID(final UUID u) {
-		return uuidDB.get(u);
-	}
-
-	public static void putUuidDb(final Player p) {
-		uuidDB.put(p.getUniqueId(), p.getName());
 	}
 
 	public static boolean isBuilder(final Player p) {

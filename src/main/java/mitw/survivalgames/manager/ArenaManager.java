@@ -49,7 +49,7 @@ public class ArenaManager {
 		SgChestManager.opened.clear();
 	}
 
-	public static void createNewArena(String name) {
+	public static void createNewArena(final String name) {
 		final Arena a = new Arena();
 		a.setName(name);
 		a.setDisplayName(name);
@@ -57,13 +57,14 @@ public class ArenaManager {
 		final World w = Bukkit.createWorld(new WorldCreator(name));
 		/* debug */
 		final Chunk c = w.getSpawnLocation().getChunk();
-		if (!c.isLoaded())
+		if (!c.isLoaded()) {
 			c.load(true);
+		}
 		a.setWorld(w);
 		a.setCenter(w.getSpawnLocation());
 	}
 
-	public static Arena getArena(String s) {
+	public static Arena getArena(final String s) {
 		for (final Arena a : arenas) {
 			if (a.getName().toLowerCase().equals(s.toLowerCase()))
 				return a;
@@ -71,7 +72,7 @@ public class ArenaManager {
 		return null;
 	}
 
-	public static void loadArena(Arena a) {
+	public static void loadArena(final Arena a) {
 		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "generatingWorld")));
 		final String arenaName = a.getName();
 		final FileConfiguration c = SurvivalGames.getFileManager().getClocation();
@@ -83,16 +84,20 @@ public class ArenaManager {
 		w.setGameRuleValue("doMobSpawning", "false");
 		w.setGameRuleValue("doDaylightCycle", "false");
 		w.setGameRuleValue("keepInventory", "false");
+		w.setGameRuleValue("doFireTick", "false");
 		w.setTime(6000);
 		w.setDifficulty(Difficulty.PEACEFUL);
 		w.setDifficulty(Difficulty.EASY);
 		a.setCenter(Utils.StrToLoc(c.getString("Arenas." + arenaName + ".center")));
-		for (final String spawn : c.getStringList("Arenas." + arenaName + ".spawnPoints"))
+		for (final String spawn : c.getStringList("Arenas." + arenaName + ".spawnPoints")) {
 			a.addSpawn(Utils.StrToLocPitch(spawn));
-		for (final String tir2 : c.getStringList("Arenas." + arenaName + ".Tir2s"))
+		}
+		for (final String tir2 : c.getStringList("Arenas." + arenaName + ".Tir2s")) {
 			a.addTir2(Utils.StrToLoc(tir2));
-		for (final String centerChest : c.getStringList("Arenas." + arenaName + ".centerChest"))
+		}
+		for (final String centerChest : c.getStringList("Arenas." + arenaName + ".centerChest")) {
 			a.addCenter(Utils.StrToLoc(centerChest));
+		}
 		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "generatedWorld")));
 	}
 
@@ -122,6 +127,7 @@ public class ArenaManager {
 					w.setAnimalSpawnLimit(0);
 					w.setGameRuleValue("doMobSpawning", "false");
 					w.setGameRuleValue("doDaylightCycle", "false");
+					w.setGameRuleValue("doFireTick", "false");
 					w.setTime(6000);
 					w.setDifficulty(Difficulty.PEACEFUL);
 					w.setDifficulty(Difficulty.EASY);

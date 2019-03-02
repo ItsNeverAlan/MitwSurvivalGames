@@ -64,10 +64,9 @@
 
 		<dependency>
 			<groupId>net.development.mitw</groupId>
-			<artifactId>Mitw</artifactId>
+			<artifactId>mitw</artifactId>
 			<version>1.0.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/libs/Mitw-1.0.0.jar</systemPath>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

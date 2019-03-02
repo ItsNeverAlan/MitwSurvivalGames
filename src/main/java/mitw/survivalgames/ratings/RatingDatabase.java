@@ -12,6 +12,7 @@ import mitw.survivalgames.manager.PlayerManager;
 import net.development.mitw.Mitw;
 import net.development.mitw.database.Database;
 import net.development.mitw.utils.FastUUID;
+import net.development.mitw.uuid.UUIDCache;
 
 public class RatingDatabase {
 
@@ -42,9 +43,8 @@ public class RatingDatabase {
 
 	public PlayerCache createCache(final Player player) {
 
-		if (PlayerManager.hasCache(player.getUniqueId())) {
+		if (PlayerManager.hasCache(player.getUniqueId()))
 			return PlayerManager.getCache(player.getUniqueId());
-		}
 
 		final PlayerCache playerCache = new PlayerCache();
 		playerCache.setUuid(player.getUniqueId());
@@ -80,12 +80,11 @@ public class RatingDatabase {
 
 	}
 
-	private String getRatingTop(String name) {
+	private String getRatingTop(final String name) {
 		int i = 1;
 		for (final String name2 : RatingManager.getInstance().getRatingTop().keySet()) {
-			if (name.equals(name2)) {
+			if (name.equals(name2))
 				return i + "";
-			}
 			i++;
 		}
 		return "unkwown";
@@ -95,7 +94,7 @@ public class RatingDatabase {
 		sqlTable.executeUpdate("UPDATE `" + TABLE_NAME + "` SET `name` = ?, `wins` = ?, `kills` = ?, `deaths` = ?, `rating` = ? WHERE `uuid` = ?;")
 		.dataSource(database.getDataSource())
 		.statement(s -> {
-			s.setString(1, PlayerManager.getNameByUUID(playerCache.getUuid()));
+			s.setString(1,UUIDCache.getName(playerCache.getUuid()));
 			s.setInt(2, playerCache.getWins());
 			s.setInt(3, playerCache.getKills());
 			s.setInt(4, playerCache.getDeaths());

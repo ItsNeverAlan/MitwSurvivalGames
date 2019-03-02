@@ -219,8 +219,9 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onHungerLose(final FoodLevelChangeEvent e) {
 		final Player p = (Player) e.getEntity();
-		if (PlayerManager.getBuilders().contains(p.getUniqueId()) || !GameStatus.isGaming(true) || !PlayerManager.getPlayers().contains(p.getUniqueId())) {
+		if (PlayerManager.getBuilders().contains(p.getUniqueId()) || !GameStatus.isGaming(true) || !PlayerManager.isGameingPlayer(p)) {
 			e.setFoodLevel(20);
+			e.setCancelled(true);
 		}
 	}
 

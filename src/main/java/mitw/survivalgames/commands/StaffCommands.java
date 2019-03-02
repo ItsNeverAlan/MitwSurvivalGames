@@ -8,18 +8,18 @@ import net.development.mitw.utils.Common;
 
 public abstract class StaffCommands extends PlayerCommands {
 
-	protected StaffCommands(String name) {
+	protected StaffCommands(final String name) {
 		super(name);
 	}
 
 	@Override
-	public boolean execute(CommandSender sender, String label, String[] args) {
+	public boolean execute(final CommandSender sender, final String label, final String[] args) {
 		if (!(sender instanceof Player)) {
-			Common.tell(sender, "&c這個指令只能由玩家使用!");
+			Common.tell(sender, "&cOnly staff can use this command!");
 			return false;
 		}
 		if (!sender.hasPermission(Lang.ADMIN_PERM)) {
-			Common.tell(sender, "&c抱歉,您沒有權限使用此指令");
+			Common.tell(sender, "&c嚙踝蕭p,嚙緲嚙磅嚙踝蕭嚙緞嚙踝蕭嚙誕用佗蕭嚙踝蕭嚙瞌");
 			return false;
 		}
 		p = (Player) sender;

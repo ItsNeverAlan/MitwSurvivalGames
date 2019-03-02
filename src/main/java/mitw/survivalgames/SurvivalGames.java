@@ -66,6 +66,7 @@ public class SurvivalGames extends JavaPlugin {
 
 		getArenaManager().setupGameRule();
 		BoardSetup.setup();
+
 	}
 
 	public static SgChestManager getSgChestManager() {
@@ -118,7 +119,7 @@ public class SurvivalGames extends JavaPlugin {
 		.forEach(command -> MinecraftServer.getServer().server.getCommandMap().register("mitwsg", command));
 	}
 
-	public static void registerCommand(Command command) {
+	public static void registerCommand(final Command command) {
 		try {
 			final Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 			commandMapField.setAccessible(true);

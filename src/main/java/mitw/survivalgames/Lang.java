@@ -30,6 +30,7 @@ public class Lang {
 	public String zh_tw_lbTitle = "&b&l排行&f&l榜";
 	public String zh_tw_generatingWorld = "§e生成場地中...";
 	public String zh_tw_generatedWorld = "§e場地生成完畢!";
+	public String zh_tw_no_permission = "&c沒有權限.";
 
 	public List<String> zh_tw_watingList = Arrays.asList(
 			"&7&m---------------------------",
@@ -169,6 +170,7 @@ public class Lang {
 	public String en_us_statsLeaderboard = "Leaderboard";
 	public String en_us_statsTitle = "&6&lPlayer&f&l stats";
 	public String en_us_lbTitle = "&b&lLeader&f&lboard";
+	public String en_us_no_permission = "&cNo permission";
 
 	public String en_us_generatingWorld = "§eGenarting arena...";
 	public String en_us_generatedWorld = "§eArena generate complate!";

@@ -33,7 +33,6 @@ public class JoinQuitListener implements Listener {
 			PlayerManager.clearInventory(p);
 			PlayerManager.tpToSpawn(p);
 			PlayerManager.giveWaitingItem(p);
-			PlayerManager.putUuidDb(p);
 			p.setGameMode(GameMode.SURVIVAL);
 			if (!isCast) {
 				Bukkit.getScheduler().runTaskLater(SurvivalGames.getInstance(), () -> {

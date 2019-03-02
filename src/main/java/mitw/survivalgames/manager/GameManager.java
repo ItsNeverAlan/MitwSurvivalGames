@@ -27,6 +27,7 @@ import mitw.survivalgames.tasks.DmStartTask;
 import mitw.survivalgames.tasks.FireworkTask;
 import mitw.survivalgames.tasks.GameTask;
 import mitw.survivalgames.utils.Utils;
+import net.development.mitw.uuid.UUIDCache;
 import net.md_5.bungee.api.ChatColor;
 
 public class GameManager {
@@ -54,7 +55,7 @@ public class GameManager {
 		if (!(PlayerManager.getPlayers().size() < 2))
 			return;
 
-		BoardSetup.winnerName = PlayerManager.getNameByUUID(PlayerManager.getPlayers().get(0));
+		BoardSetup.winnerName = UUIDCache.getName(PlayerManager.getPlayers().get(0));
 		BoardSetup.winnerKills = PlayerManager.getKills(PlayerManager.getPlayers().get(0)) + "";
 		GameStatus.setState(GameStatus.FINISH);
 		if (!PlayerManager.getPlayers().isEmpty()) {
@@ -213,7 +214,7 @@ public class GameManager {
 		final List<UUID> temp = Utils.getTopArray(PlayerManager.getKills());
 		Bukkit.broadcastMessage(Utils.colored("&f&m--------------------------"));
 		for (int i = 0; i < temp.size() && i < 3; i++) {
-			final String color = getKillTopColor(i), top = (i + 1) + "", name = PlayerManager.getNameByUUID(temp.get(i)),
+			final String color = getKillTopColor(i), top = (i + 1) + "", name = UUIDCache.getName(temp.get(i)),
 					kills = PlayerManager.getKills().get(temp.get(i)) + "";
 			Bukkit.getOnlinePlayers().forEach(
 					pl -> pl.sendMessage(color + top + ". " + name + " -> " + kills + " " + SurvivalGames.getLanguage().translate(pl, "kills")));
