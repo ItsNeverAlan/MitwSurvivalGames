@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import lombok.Getter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.arena.Arena;
 import mitw.survivalgames.utils.Utils;
+import net.minecraft.server.v1_8_R3.EntityLiving;
 
 @Getter
 public class ArenaManager {
@@ -97,6 +99,11 @@ public class ArenaManager {
 		}
 		for (final String centerChest : c.getStringList("Arenas." + arenaName + ".centerChest")) {
 			a.addCenter(Utils.StrToLoc(centerChest));
+		}
+		for (final Entity entity : w.getEntities()) {
+			if (entity instanceof EntityLiving) {
+				entity.remove();
+			}
 		}
 		Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "generatedWorld")));
 	}

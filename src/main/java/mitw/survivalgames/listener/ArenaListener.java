@@ -7,6 +7,7 @@ import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
@@ -20,6 +21,7 @@ import mitw.survivalgames.manager.ArenaManager;
 import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.manager.PlayerManager;
 import mitw.survivalgames.manager.SgChestManager;
+import net.minecraft.server.v1_8_R3.EntityLiving;
 
 public class ArenaListener implements Listener {
 
@@ -34,6 +36,12 @@ public class ArenaListener implements Listener {
 			return;
 		}
 
+	}
+
+	public void onEntitySpawn(final CreatureSpawnEvent event) {
+		if (event.getEntity() instanceof EntityLiving || event.getEntity() instanceof Player)
+			return;
+		event.setCancelled(true);
 	}
 
 	@EventHandler

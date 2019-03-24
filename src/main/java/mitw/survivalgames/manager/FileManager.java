@@ -9,11 +9,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.arena.Arena;
+import mitw.survivalgames.ratings.rank.Rank;
 import mitw.survivalgames.utils.Utils;
 
 public class FileManager {
-	private File location, settings;
-	private YamlConfiguration locConfig, settingsConfig;
+	private File location, settings, ranks;
+	private YamlConfiguration locConfig, settingsConfig, ranksConfig;
 	public static FileManager ins;
 
 	public FileManager() {
@@ -22,12 +23,15 @@ public class FileManager {
 	}
 
 	public void setupFiles() {
-		if (!SurvivalGames.getInstance().getDataFolder().exists())
+		if (!SurvivalGames.getInstance().getDataFolder().exists()) {
 			SurvivalGames.getInstance().getDataFolder().mkdir();
+		}
 		location = completeCreateFiles(location, "location.yml");
 		settings = completeCreateFiles(settings, "settings.yml");
+		ranks = completeCreateFiles(ranks, "ranks.yml");
 		locConfig = YamlConfiguration.loadConfiguration(location);
 		settingsConfig = YamlConfiguration.loadConfiguration(settings);
+		ranksConfig = YamlConfiguration.loadConfiguration(ranks);
 	}
 
 	public YamlConfiguration getClocation() {
@@ -36,6 +40,18 @@ public class FileManager {
 
 	public YamlConfiguration getCsettings() {
 		return settingsConfig;
+	}
+
+	public YamlConfiguration getRanks() {
+		return ranksConfig;
+	}
+
+	public void saveRanks() {
+		try {
+			ranksConfig.save(ranks);
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void saveLocationConfig() {
@@ -54,20 +70,21 @@ public class FileManager {
 		}
 	}
 
-	private File completeCreateFiles(File file, String name) {
+	private File completeCreateFiles(File file, final String name) {
 		file = new File(SurvivalGames.getInstance().getDataFolder(), name);
-		if (!file.exists())
+		if (!file.exists()) {
 			try {
 				file.createNewFile();
 				SurvivalGames.getInstance().saveResource(name, true);
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}
+		}
 
 		return file;
 	}
 
-	public void writeNewArena(String name) {
+	public void writeNewArena(final String name) {
 		final ArrayList<String> empty = new ArrayList<>();
 		getClocation().set("Arenas." + name + ".displayName", "");
 		getClocation().set("Arenas." + name + ".spawnPoints", empty.toArray());
@@ -81,11 +98,19 @@ public class FileManager {
 		loadLobby();
 		loadArenas();
 		loadOthers();
+		loadRanks();
+	}
+
+	private void loadRanks() {
+		for (final String key : ranksConfig.getKeys(false)) {
+			new Rank(ranksConfig.getConfigurationSection(key));
+		}
 	}
 
 	private void loadLobby() {
-		if (getClocation().getString("Lobby") != null)
+		if (getClocation().getString("Lobby") != null) {
 			PlayerManager.setSpawnLocation(Utils.StrToLocPitch(getClocation().getString("Lobby")));
+		}
 	}
 
 	private void loadArenas() {

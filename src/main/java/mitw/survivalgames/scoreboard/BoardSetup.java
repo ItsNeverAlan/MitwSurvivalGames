@@ -12,6 +12,7 @@ import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.manager.ArenaManager;
 import mitw.survivalgames.manager.PlayerManager;
 import mitw.survivalgames.ratings.PlayerCache;
+import mitw.survivalgames.ratings.rank.Rank;
 import mitw.survivalgames.tasks.DeathMatchTask;
 import mitw.survivalgames.tasks.DmStartTask;
 import mitw.survivalgames.tasks.GameTask;
@@ -51,7 +52,7 @@ public class BoardSetup {
 		}
 	}
 
-	public static List<String> getList(Player p) {
+	public static List<String> getList(final Player p) {
 		switch (GameStatus.getState()) {
 		case WAITING:
 			return SurvivalGames.getLanguage().translateArrays(p, "watingList");
@@ -72,6 +73,9 @@ public class BoardSetup {
 	public static String var(final Player p, String s) {
 		final PlayerCache playerCache = PlayerManager.getCache(p.getUniqueId());
 		s = s.replaceAll("<rating>", playerCache.getRating() + "");
+		if (s.contains("<rank>")) {
+			s = s.replaceAll("<rank>", Rank.getRank(playerCache).getDisplayName(p));
+		}
 		switch (GameStatus.getState()) {
 		case WAITING:
 			return s.replaceAll("<players>", "" + Bukkit.getOnlinePlayers().size()).replaceAll("&", "¡±")

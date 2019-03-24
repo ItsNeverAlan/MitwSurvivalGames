@@ -243,8 +243,7 @@ public class GameManager {
 	}
 
 	public static boolean sameBlock(final Location location, final Location check) {
-		return location.getWorld().getName().equalsIgnoreCase(check.getWorld().getName()) && location.getBlockX() == check.getBlockX()
-				&& location.getBlockY() == check.getBlockY() && location.getBlockZ() == check.getBlockZ();
+		return location.getWorld().getName().equalsIgnoreCase(check.getWorld().getName()) && location.getBlockX() == check.getBlockX() && location.getBlockZ() == check.getBlockZ();
 	}
 
 	public static boolean isOutBlock(final Location location) {

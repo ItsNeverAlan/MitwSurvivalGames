@@ -9,12 +9,13 @@ import org.bukkit.inventory.ItemStack;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.ratings.PlayerCache;
 import mitw.survivalgames.ratings.RatingManager;
+import mitw.survivalgames.ratings.rank.Rank;
 import mitw.survivalgames.utils.MenuBuilder;
 import net.development.mitw.utils.ItemBuilder;
 
 public class TopGUI extends MenuBuilder {
 
-	public TopGUI(Player player) {
+	public TopGUI(final Player player) {
 		super(SurvivalGames.getLanguage().translate(player, "lbTitle"), 1);
 
 		ItemBuilder itemBuilder = new ItemBuilder(Material.DIAMOND_BLOCK);
@@ -27,7 +28,7 @@ public class TopGUI extends MenuBuilder {
 			if (i > 10) {
 				break;
 			}
-			itemBuilder.lore("¡±e" + i + ") " + name + " ¡±7- ¡±6" + top.get(name));
+			itemBuilder.lore("¡±e" + i + ") " + name + " ¡±7- " + Rank.getRank(top.get(name)).getIcon() + top.get(name));
 			i++;
 		}
 
@@ -74,6 +75,6 @@ public class TopGUI extends MenuBuilder {
 	}
 
 	@Override
-	public void onClick(Player p, ItemStack i, ItemStack[] items) {}
+	public void onClick(final Player p, final ItemStack i, final ItemStack[] items) {}
 
 }

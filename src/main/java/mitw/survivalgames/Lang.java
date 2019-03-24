@@ -39,6 +39,7 @@ public class Lang {
 			"&6伺服器分流: &f<server>",
 			"",
 			"&b積分:&f <rating>",
+			"&e排位:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_startingList = Arrays.asList(
 			"&7&m---------------------------",
@@ -47,6 +48,7 @@ public class Lang {
 			"&6伺服器分流: &f<server>",
 			"",
 			"&b積分:&f <rating>",
+			"&e排位:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_gamingList = Arrays.asList(
 			"&7&m---------------------------",
@@ -66,6 +68,7 @@ public class Lang {
 			"&6擊殺數:&f <playerKills>",
 			"",
 			"&b積分:&f <rating>",
+			"&e排位:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_dmStartList = Arrays.asList(
 			"&7&m---------------------------",
@@ -74,6 +77,7 @@ public class Lang {
 			"&c伺服器分流: &f<server>",
 			"",
 			"&b積分:&f <rating>",
+			"&e排位:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_dmList = Arrays.asList(
 			"&7&m---------------------------",
@@ -94,6 +98,7 @@ public class Lang {
 	public String zh_tw_youKills1, zh_tw_youGotKillByS1, zh_tw_s1Death;
 	public String zh_tw_pplJoin, zh_tw_pplLeave, zh_tw_ratingAdded, zh_tw_ratingRemoved, zh_tw_ratingRemoveReason;
 	public String zh_tw_gameStarted, zh_tw_allLightStart;
+	public String zh_tw_rank = "排位";
 	public List<String> zh_tw_victoryMsg = new ArrayList<>();
 	public List<String> zh_tw_infoMessage = new ArrayList<>();
 
@@ -104,6 +109,7 @@ public class Lang {
 			"&6Server: &f<server>",
 			"",
 			"&bRating:&f <rating>",
+			"&eRank:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> en_us_startingList = Arrays.asList(
 			"&7&m---------------------------",
@@ -112,6 +118,7 @@ public class Lang {
 			"&6Server: &f<server>",
 			"",
 			"&bRating:&f <rating>",
+			"&eRank:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> en_us_gamingList = Arrays.asList(
 			"&7&m---------------------------",
@@ -131,6 +138,7 @@ public class Lang {
 			"&6Kills:&f <playerKills>",
 			"",
 			"&bRating:&f <rating>",
+			"&eRank:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> en_us_dmStartList = Arrays.asList(
 			"&7&m---------------------------",
@@ -139,6 +147,7 @@ public class Lang {
 			"&cServer: &f<server>",
 			"",
 			"&bRating:&f <rating>",
+			"&eRank:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> en_us_dmList = Arrays.asList(
 			"&7&m---------------------------",
@@ -162,6 +171,7 @@ public class Lang {
 	public List<String> en_us_victoryMsg = new ArrayList<>();
 	public List<String> en_us_infoMessage = new ArrayList<>();
 
+	public String en_us_rank = "Rank";
 	public String en_us_statsWins = "Wins";
 	public String en_us_statsKills = "Kills";
 	public String en_us_statsDeaths = "Deaths";
