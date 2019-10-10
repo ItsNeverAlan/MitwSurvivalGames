@@ -19,7 +19,7 @@ public abstract class StaffCommands extends PlayerCommands {
 			return false;
 		}
 		if (!sender.hasPermission(Lang.ADMIN_PERM)) {
-			Common.tell(sender, "&c��p,�z�S���v���ϥΦ����O");
+			Common.tell(sender, "&c你沒有權限.");
 			return false;
 		}
 		p = (Player) sender;

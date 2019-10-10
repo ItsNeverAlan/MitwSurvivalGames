@@ -34,7 +34,7 @@ public class ItemBuilder {
 				votes++;
 		}
 		m.setDisplayName(Common.colored(a.getDisplayName()));
-		m.setLore(Arrays.asList("”fヘ玡布计: ”6" + votes));
+		m.setLore(Arrays.asList("搂f鐩墠绁ㄦ暩: 搂6" + votes));
 		i.setItemMeta(m);
 		return i;
 	}
@@ -45,7 +45,7 @@ public class ItemBuilder {
 		final int votes = ArenaManager.getVoteRandom().size();
 		m.setDisplayName(Utils.colored(name));
 		final ArrayList<String> lore = new ArrayList<>();
-		lore.add("”fヘ玡布计: ”6" + votes);
+		lore.add("搂f鐩墠绁ㄦ暩: 搂6" + votes);
 		m.setLore(lore);
 		i.setItemMeta(m);
 		return i;

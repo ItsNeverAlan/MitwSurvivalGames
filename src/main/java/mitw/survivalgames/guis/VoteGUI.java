@@ -19,13 +19,13 @@ public class VoteGUI extends MenuBuilder {
 	private final Map<ItemStack, Arena> arenaItems = new HashMap<>();
 
 	public VoteGUI() {
-		super("&6§ë²¼¦a¹Ï", 3);
+		super("&6æŠ•ç¥¨åœ°åœ–", 3);
 		int run = 0;
 		for (final Arena a : ArenaManager.getArenas()) {
 			s(run, SurvivalGames.getItemBuilder().createVoteMapItem(Material.EMPTY_MAP, a), a);
 			run++;
 		}
-		Lang.RandomMap = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&eÀH½t&7(Random Map)");
+		Lang.RandomMap = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&eéš¨ç·£&7(Random Map)");
 		s(i().getSize() - 1, Lang.RandomMap);
 
 	}
@@ -41,7 +41,7 @@ public class VoteGUI extends MenuBuilder {
 		else
 			ArenaManager.getVotes().put(p.getUniqueId(), arenaItems.get(i));
 		Common.sound(p, Sound.CLICK);
-		Lang.RandomMap = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&eÀH½t&7(Random Map)");
+		Lang.RandomMap = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&eéš¨ç·£&7(Random Map)");
 		new VoteGUI().o(p);
 	}
 

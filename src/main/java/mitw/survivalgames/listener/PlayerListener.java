@@ -126,10 +126,10 @@ public class PlayerListener implements Listener {
 			a = ArenaManager.getEditors().get(u);
 			if (!a.getTir2Chests().contains(l)) {
 				SurvivalGames.getSgChestManager().setTir2(l, a);
-				p.sendMessage(Utils.colored("&a¦¨¥\·s¼W°ªµ¥½c¤l,¥Ø«e¦@¦³ &f" + a.getTir2Chests().size() + "&a ­Ó°ªµ¥½c¤l"));
+				p.sendMessage(Utils.colored("&aæˆåŠŸæ–°å¢é«˜ç­‰ç®±å­,ç›®å‰å…±æœ‰ &f" + a.getTir2Chests().size() + "&a å€‹é«˜ç­‰ç®±å­"));
 			} else {
 				SurvivalGames.getSgChestManager().removeTir2(l, a);
-				p.sendMessage(Utils.colored("&c¦¨¥\²¾°£°ªµ¥½c¤l,¥Ø«e³Ñ¤U &f" + a.getTir2Chests().size() + "&a ­Ó°ªµ¥½c¤l"));
+				p.sendMessage(Utils.colored("&cæˆåŠŸç§»é™¤é«˜ç­‰ç®±å­,ç›®å‰å‰©ä¸‹ &f" + a.getTir2Chests().size() + "&a å€‹é«˜ç­‰ç®±å­"));
 			}
 			return;
 		}
@@ -141,10 +141,10 @@ public class PlayerListener implements Listener {
 			a = ArenaManager.getEditors().get(u);
 			if (!a.getCenterChests().contains(l)) {
 				SurvivalGames.getSgChestManager().setCenter(l, a);
-				p.sendMessage(Utils.colored("&e¦¨¥\·s¼W¤¤¤ßÂI½c¤l,¥Ø«e¦@¦³ &f" + a.getCenterChests().size() + "&e ­Ó°ªµ¥½c¤l"));
+				p.sendMessage(Utils.colored("&eæˆåŠŸæ–°å¢ä¸­å¿ƒé»ç®±å­,ç›®å‰å…±æœ‰ &f" + a.getCenterChests().size() + "&e å€‹é«˜ç­‰ç®±å­"));
 			} else {
 				SurvivalGames.getSgChestManager().removeCenterTir2(l, a);
-				p.sendMessage(Utils.colored("&e¦¨¥\²¾°£¤¤¤ßÂI½c¤l,¥Ø«e³Ñ¤U &f" + a.getCenterChests().size() + "&e ­Ó°ªµ¥½c¤l"));
+				p.sendMessage(Utils.colored("&eæˆåŠŸç§»é™¤ä¸­å¿ƒé»ç®±å­,ç›®å‰å‰©ä¸‹ &f" + a.getCenterChests().size() + "&e å€‹é«˜ç­‰ç®±å­"));
 			}
 			return;
 		}
@@ -178,7 +178,7 @@ public class PlayerListener implements Listener {
 			}
 			if (i.equals(Lang.playAnotherGame)) {
 				e.setCancelled(true);
-				p.chat("/chooseServer");
+				p.chat("/isel open sg");
 				return;
 			}
 			if (i.equals(Lang.iVoteMap)) {
@@ -252,23 +252,23 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPing(final ServerListPingEvent e) {
 		switch (GameStatus.getState()) {
-		case WAITING:
-			e.setMotd(ChatColor.GREEN + "µ¥«İ¤¤!°¨¤W¥[¤J!");
-			break;
-		case STARRTING:
-			e.setMotd(ChatColor.RED + "¶Ç°eª±®a¤¤....");
-			break;
-		case GAMING:
-			e.setMotd(ChatColor.RED + "¹CÀ¸¤w¸g¶}©l");
-			break;
-		case FINISH:
-			e.setMotd(ChatColor.BLUE + "¹CÀ¸µ²§ô¤F,·Ç³Æ­«¸m");
-			break;
-		case DEATHMATCH:
-			e.setMotd(ChatColor.RED + "¹CÀ¸¤w¸g¶}©l");
-			break;
-		default:
-			break;
+			case WAITING:
+				e.setMotd(ChatColor.GREEN + "ç­‰å¾…ä¸­!é¦¬ä¸ŠåŠ å…¥!");
+				break;
+			case STARRTING:
+				e.setMotd(ChatColor.RED + "å‚³é€ç©å®¶ä¸­....");
+				break;
+			case GAMING:
+				e.setMotd(ChatColor.RED + "éŠæˆ²å·²ç¶“é–‹å§‹");
+				break;
+			case FINISH:
+				e.setMotd(ChatColor.BLUE + "éŠæˆ²çµæŸäº†,æº–å‚™é‡ç½®");
+				break;
+			case DEATHMATCH:
+				e.setMotd(ChatColor.RED + "éŠæˆ²å·²ç¶“é–‹å§‹");
+				break;
+			default:
+				break;
 		}
 	}
 

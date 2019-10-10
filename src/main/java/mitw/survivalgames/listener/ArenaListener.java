@@ -25,19 +25,6 @@ import net.minecraft.server.v1_8_R3.EntityLiving;
 
 public class ArenaListener implements Listener {
 
-	@EventHandler
-	public void onMove(final PlayerMoveEvent e) {
-		final Player p = e.getPlayer();
-		if (PlayerManager.isBuilder(p))
-			return;
-		if ((GameStatus.isStarting() || GameStatus.isDmStarting()) && PlayerManager.getPlayers().contains(p.getUniqueId())
-				&& !GameManager.sameBlock(e.getTo(), e.getFrom())) {
-			e.setTo(e.getFrom());
-			return;
-		}
-
-	}
-
 	public void onEntitySpawn(final CreatureSpawnEvent event) {
 		if (event.getEntity() instanceof EntityLiving || event.getEntity() instanceof Player)
 			return;

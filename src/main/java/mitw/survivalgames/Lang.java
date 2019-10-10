@@ -20,75 +20,75 @@ public class Lang {
 
 	public static String serverName;
 
-	public String zh_tw_statsWins = "³Ó§Q¦¸¼Æ";
-	public String zh_tw_statsKills = "À»±ş¦¸¼Æ";
-	public String zh_tw_statsDeaths = "¦º¤`¦¸¼Æ";
-	public String zh_tw_statsRating = "¿n¤À";
-	public String zh_tw_statsRankTop = "¿n¤À±Æ¦W";
-	public String zh_tw_statsLeaderboard = "±Æ¦æº]";
-	public String zh_tw_statsTitle = "&6&lª±®a&f&l¸ê®Æ";
-	public String zh_tw_lbTitle = "&b&l±Æ¦æ&f&lº]";
-	public String zh_tw_generatingWorld = "¡±e¥Í¦¨³õ¦a¤¤...";
-	public String zh_tw_generatedWorld = "¡±e³õ¦a¥Í¦¨§¹²¦!";
-	public String zh_tw_no_permission = "&c¨S¦³Åv­­.";
+	public String zh_tw_statsWins = "å‹åˆ©æ¬¡æ•¸";
+	public String zh_tw_statsKills = "æ“Šæ®ºæ¬¡æ•¸";
+	public String zh_tw_statsDeaths = "æ­»äº¡æ¬¡æ•¸";
+	public String zh_tw_statsRating = "ç©åˆ†";
+	public String zh_tw_statsRankTop = "ç©åˆ†æ’å";
+	public String zh_tw_statsLeaderboard = "æ’è¡Œæ¦œ";
+	public String zh_tw_statsTitle = "&6&lç©å®¶&f&lè³‡æ–™";
+	public String zh_tw_lbTitle = "&b&læ’è¡Œ&f&læ¦œ";
+	public String zh_tw_generatingWorld = "Â§eç”Ÿæˆå ´åœ°ä¸­...";
+	public String zh_tw_generatedWorld = "Â§eå ´åœ°ç”Ÿæˆå®Œç•¢!";
+	public String zh_tw_no_permission = "&cæ²’æœ‰æ¬Šé™.";
 
 	public List<String> zh_tw_watingList = Arrays.asList(
 			"&7&m---------------------------",
-			"&6¤H¼Æ: &f<players>",
-			"&6§ë²¼µ²§ô: &f<starting>¬í",
-			"&6¦øªA¾¹¤À¬y: &f<server>",
+			"&6äººæ•¸: &f<players>",
+			"&6æŠ•ç¥¨çµæŸ: &f<starting>ç§’",
+			"&6ä¼ºæœå™¨åˆ†æµ: &f<server>",
 			"",
-			"&b¿n¤À:&f <rating>",
-			"&e±Æ¦ì:&f <rank>",
+			"&bç©åˆ†:&f <rating>",
+			"&eæ’ä½:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_startingList = Arrays.asList(
 			"&7&m---------------------------",
-			"&6¤H¼Æ: &f<players>",
-			"&6¹CÀ¸¶}©l: &f<starting>¬í",
-			"&6¦øªA¾¹¤À¬y: &f<server>",
+			"&6äººæ•¸: &f<players>",
+			"&6éŠæˆ²é–‹å§‹: &f<starting>ç§’",
+			"&6ä¼ºæœå™¨åˆ†æµ: &f<server>",
 			"",
-			"&b¿n¤À:&f <rating>",
-			"&e±Æ¦ì:&f <rank>",
+			"&bç©åˆ†:&f <rating>",
+			"&eæ’ä½:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_gamingList = Arrays.asList(
 			"&7&m---------------------------",
-			"&6®É¶¡:&f <time>",
-			"&6¦a¹Ï:&f <arena>",
-			"&6¤H¼Æ:&f <players>/<max>",
+			"&6æ™‚é–“:&f <time>",
+			"&6åœ°åœ–:&f <arena>",
+			"&6äººæ•¸:&f <players>/<max>",
 			"",
-			"&6À»±ş¼Æ:&f <kills>",
-			"&b¿n¤À:&f <rating>",
+			"&6æ“Šæ®ºæ•¸:&f <kills>",
+			"&bç©åˆ†:&f <rating>",
 			"",
-			"&6¦øªA¾¹¤À¬y: &f<server>",
+			"&6ä¼ºæœå™¨åˆ†æµ: &f<server>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_finishList = Arrays.asList(
 			"&7&m---------------------------",
-			"&6®É¶¡:&f <time>",
-			"&e³Ó§QªÌ:&f <player>",
-			"&6À»±ş¼Æ:&f <playerKills>",
+			"&6æ™‚é–“:&f <time>",
+			"&eå‹åˆ©è€…:&f <player>",
+			"&6æ“Šæ®ºæ•¸:&f <playerKills>",
 			"",
-			"&b¿n¤À:&f <rating>",
-			"&e±Æ¦ì:&f <rank>",
+			"&bç©åˆ†:&f <rating>",
+			"&eæ’ä½:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_dmStartList = Arrays.asList(
 			"&7&m---------------------------",
-			"&c¤H¼Æ: &f<players>",
-			"&c¦º¤`¤§¾Ô¶}©l: &f<starting>¬í",
-			"&c¦øªA¾¹¤À¬y: &f<server>",
+			"&cäººæ•¸: &f<players>",
+			"&cæ­»äº¡ä¹‹æˆ°é–‹å§‹: &f<starting>ç§’",
+			"&cä¼ºæœå™¨åˆ†æµ: &f<server>",
 			"",
-			"&b¿n¤À:&f <rating>",
-			"&e±Æ¦ì:&f <rank>",
+			"&bç©åˆ†:&f <rating>",
+			"&eæ’ä½:&f <rank>",
 			"&7&m---------------------------");
 	public List<String> zh_tw_dmList = Arrays.asList(
 			"&7&m---------------------------",
-			"&c®É¶¡:&f <time>",
-			"&c¦a¹Ï:&f <arena>",
-			"&c¤H¼Æ:&f <players>/<max>",
+			"&cæ™‚é–“:&f <time>",
+			"&cåœ°åœ–:&f <arena>",
+			"&cäººæ•¸:&f <players>/<max>",
 			"",
-			"&cÀ»±ş¼Æ:&f <kills>",
-			"&b¿n¤À:&f <rating>",
+			"&cæ“Šæ®ºæ•¸:&f <kills>",
+			"&bç©åˆ†:&f <rating>",
 			"",
-			"&c¦øªA¾¹¤À¬y: &f<server>",
+			"&cä¼ºæœå™¨åˆ†æµ: &f<server>",
 			"&7&m---------------------------");
 
 	public String zh_tw_outArena, zh_tw_notOnline;
@@ -98,7 +98,7 @@ public class Lang {
 	public String zh_tw_youKills1, zh_tw_youGotKillByS1, zh_tw_s1Death;
 	public String zh_tw_pplJoin, zh_tw_pplLeave, zh_tw_ratingAdded, zh_tw_ratingRemoved, zh_tw_ratingRemoveReason;
 	public String zh_tw_gameStarted, zh_tw_allLightStart;
-	public String zh_tw_rank = "±Æ¦ì";
+	public String zh_tw_rank = "æ’ä½";
 	public List<String> zh_tw_victoryMsg = new ArrayList<>();
 	public List<String> zh_tw_infoMessage = new ArrayList<>();
 
@@ -182,8 +182,8 @@ public class Lang {
 	public String en_us_lbTitle = "&b&lLeader&f&lboard";
 	public String en_us_no_permission = "&cNo permission";
 
-	public String en_us_generatingWorld = "¡±eGenarting arena...";
-	public String en_us_generatedWorld = "¡±eArena generate complate!";
+	public String en_us_generatingWorld = "Â§eGenarting arena...";
+	public String en_us_generatedWorld = "Â§eArena generate complate!";
 
 	public Lang() {
 		setupList();
@@ -192,31 +192,31 @@ public class Lang {
 	}
 
 	public void setupString() {
-		zh_tw_kills = "À»±ş";
-		zh_tw_ratingAdded = Utils.colored("&6¿n¤À +");
-		zh_tw_ratingRemoved = Utils.colored("&c¿n¤À -");
-		zh_tw_ratingRemoveReason = Utils.colored("&7(­ì¦³¿n¤À°ª©ó&c1200&7 ¨Ã¥B¦b¹CÀ¸¤¤¦º¤`)");
-		zh_tw_outArena = Utils.colored(prefix + "&c&l§A¤w¸g¶W¥X&f&l³õ¦a­­¨î½d³ò!!&c&l½Ğ»°§Ö¦^³õ¦a!!!");
-		zh_tw_cantStart = Utils.colored(prefix + "&c¹CÀ¸¤H¼Æ¤£¨¬³y¦¨µLªk¶}©l");
-		zh_tw_needDeathMatch = Utils.colored(prefix + "&c&l¥Ñ©ó¤H¼Æ³Ñ¤U&f&l4¤H!&c&l¦]¦¹¥[§Ö¹CÀ¸³t«×!&f&l2¤ÀÄÁ«á«K­n&c&l¦º¤`¤§¾Ô!");
-		zh_tw_gameStarted = Utils.colored(prefix + "&f&l¹CÀ¸¶}©l¤F,¯¬ºÖ¦U¦ì&6&l¦n¹B");
-		zh_tw_allLightStart = Utils.colored(prefix + "&f&l²{¦b¶}©l§A¤£ºŞ¦b­ş¸Ì³£·|¨ü¨ì&6&l¶Ë®`!&f&l½Ğ»°§ÖÀ»±ş¹ï¤â!");
-		zh_tw_notOnline = "¡±c¸Óª±®a¤£¦s¦b©Î¤£¦b½u!";
-		zh_tw_seconds = "¬íÄÁ";
-		zh_tw_minutes = "¤ÀÄÁ";
+		zh_tw_kills = "æ“Šæ®º";
+		zh_tw_ratingAdded = Utils.colored("&6ç©åˆ† +");
+		zh_tw_ratingRemoved = Utils.colored("&cç©åˆ† -");
+		zh_tw_ratingRemoveReason = Utils.colored("&7(åŸæœ‰ç©åˆ†é«˜æ–¼&c1200&7 ä¸¦ä¸”åœ¨éŠæˆ²ä¸­æ­»äº¡)");
+		zh_tw_outArena = Utils.colored(prefix + "&c&lä½ å·²ç¶“è¶…å‡º&f&lå ´åœ°é™åˆ¶ç¯„åœ!!&c&lè«‹è¶•å¿«å›å ´åœ°!!!");
+		zh_tw_cantStart = Utils.colored(prefix + "&céŠæˆ²äººæ•¸ä¸è¶³é€ æˆç„¡æ³•é–‹å§‹");
+		zh_tw_needDeathMatch = Utils.colored(prefix + "&c&lç”±æ–¼äººæ•¸å‰©ä¸‹&f&l4äºº!&c&lå› æ­¤åŠ å¿«éŠæˆ²é€Ÿåº¦!&f&l2åˆ†é˜å¾Œä¾¿è¦&c&læ­»äº¡ä¹‹æˆ°!");
+		zh_tw_gameStarted = Utils.colored(prefix + "&f&léŠæˆ²é–‹å§‹äº†,ç¥ç¦å„ä½&6&lå¥½é‹");
+		zh_tw_allLightStart = Utils.colored(prefix + "&f&lç¾åœ¨é–‹å§‹ä½ ä¸ç®¡åœ¨å“ªè£¡éƒ½æœƒå—åˆ°&6&lå‚·å®³!&f&lè«‹è¶•å¿«æ“Šæ®ºå°æ‰‹!");
+		zh_tw_notOnline = "Â§cè©²ç©å®¶ä¸å­˜åœ¨æˆ–ä¸åœ¨ç·š!";
+		zh_tw_seconds = "ç§’é˜";
+		zh_tw_minutes = "åˆ†é˜";
 
-		zh_tw_lobbyCount = Utils.colored(prefix + "&f§Y±N¦b&a <time> &f¬í«á¶Ç°eª±®a");
-		zh_tw_startCount = Utils.colored(prefix + "&6¹CÀ¸§Y±N¦b&f <time> &6«á¶}©l");
-		zh_tw_gameCount = Utils.colored(prefix + "&c¦º¤`¤§¾Ô­Ë¼Æ&f <time>");
-		zh_tw_deathMatchStartCount = Utils.colored(prefix + "&cª±®a§Y±N¦b <time> ¬í«áÄÀ©ñ");
-		zh_tw_allStrikeLightCount = Utils.colored(prefix + "&c&l·¥­­²^¨O¼Ò¦¡§Y±N¦b &f&l<time> &c&l¬í«á¶}©l");
+		zh_tw_lobbyCount = Utils.colored(prefix + "&få³å°‡åœ¨&a <time> &fç§’å¾Œå‚³é€ç©å®¶");
+		zh_tw_startCount = Utils.colored(prefix + "&6éŠæˆ²å³å°‡åœ¨&f <time> &6å¾Œé–‹å§‹");
+		zh_tw_gameCount = Utils.colored(prefix + "&cæ­»äº¡ä¹‹æˆ°å€’æ•¸&f <time>");
+		zh_tw_deathMatchStartCount = Utils.colored(prefix + "&cç©å®¶å³å°‡åœ¨ <time> ç§’å¾Œé‡‹æ”¾");
+		zh_tw_allStrikeLightCount = Utils.colored(prefix + "&c&læ¥µé™æ·˜æ±°æ¨¡å¼å³å°‡åœ¨ &f&l<time> &c&lç§’å¾Œé–‹å§‹");
 
-		zh_tw_youGotKillByS1 = Utils.colored(prefix + "&f§A³Q&c <player> &f¥H&b <heart>&c\u2764 &f®t¶ZÀ»±ş¤F");
-		zh_tw_youKills1 = Utils.colored(prefix + "&f§AÀ»±ş¤F&6 <player>!");
-		zh_tw_s1Death = Utils.colored(prefix + "&c<player> &f¦º¤`¤F!¹CÀ¸ÁÙ³Ñ¤U&6 <size> &f¤H¦s¬¡!");
+		zh_tw_youGotKillByS1 = Utils.colored(prefix + "&fä½ è¢«&c <player> &fä»¥&b <heart>&c\u2764 &få·®è·æ“Šæ®ºäº†");
+		zh_tw_youKills1 = Utils.colored(prefix + "&fä½ æ“Šæ®ºäº†&6 <player>!");
+		zh_tw_s1Death = Utils.colored(prefix + "&c<player> &fæ­»äº¡äº†!éŠæˆ²é‚„å‰©ä¸‹&6 <size> &fäººå­˜æ´»!");
 
-		zh_tw_pplJoin = Utils.colored(prefix + "&6<player> &f¥[¤J¤F &7(<now>/&c24&7)");
-		zh_tw_pplLeave = Utils.colored(prefix + "&6<player> &7Â÷¶}¤F¹CÀ¸ &7(<now>/&c24&7)");
+		zh_tw_pplJoin = Utils.colored(prefix + "&6<player> &fåŠ å…¥äº† &7(<now>/&c24&7)");
+		zh_tw_pplLeave = Utils.colored(prefix + "&6<player> &7é›¢é–‹äº†éŠæˆ² &7(<now>/&c24&7)");
 
 		/** EN **/
 
@@ -229,7 +229,7 @@ public class Lang {
 		en_us_needDeathMatch = Utils.colored(prefix + "&c&lTheres only &f&l4 players remaining! &c&lso this match is going to finish faster! &f&l2 minutes later start &c&ldeathmatch!");
 		en_us_gameStarted = Utils.colored(prefix + "&f&lGame started, &6&lgood luck&f&l.");
 		en_us_allLightStart = Utils.colored(prefix + "&f&lNow you'll be &6&ldamaged&f&l by system whatever where you staying, !&f&lkill your opponents faster!");
-		en_us_notOnline = "¡±cTarget aren't vaild or not online!";
+		en_us_notOnline = "Â§cTarget aren't vaild or not online!";
 		en_us_seconds = "second(s)";
 		en_us_minutes = "minute(s)";
 
@@ -249,49 +249,49 @@ public class Lang {
 	}
 
 	public void setupItems() {
-		specTp = SurvivalGames.getItemBuilder().itemWithName(Material.SLIME_BALL, "&6ÀH¾÷¶Ç°e&7(Random Teleport)");
-		playAnotherGame = SurvivalGames.getItemBuilder().itemWithName(Material.PAPER, "&a&l¦Aª±¤@¦¸&7(Play Again)");
-		returnToLobby = SurvivalGames.getItemBuilder().itemWithName(Material.BED, "&b¦^¨ì¤jÆU&7(Return to Lobby)");
-		iVoteMap = SurvivalGames.getItemBuilder().itemWithName(Material.PAPER, Utils.colored("&6&l§ë²¼&f&l¦a¹Ï&7(Vote maps)"));
-		arrowTrails = SurvivalGames.getItemBuilder().itemWithName(Material.CHEST, Utils.colored("&f&l¿ï¾Ü&e&l½b¥Ú¯S®Ä&7(Arrow trails)"));
-		RandomMap = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&eÀH½t&7(Random Map)");
-		statsItem = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&bª±®a¸ê®Æ&7(Player stats)");
+		specTp = SurvivalGames.getItemBuilder().itemWithName(Material.SLIME_BALL, "&6éš¨æ©Ÿå‚³é€&7(Random Teleport)");
+		playAnotherGame = SurvivalGames.getItemBuilder().itemWithName(Material.PAPER, "&a&lå†ç©ä¸€æ¬¡&7(Play Again)");
+		returnToLobby = SurvivalGames.getItemBuilder().itemWithName(Material.BED, "&bå›åˆ°å¤§å»³&7(Return to Lobby)");
+		iVoteMap = SurvivalGames.getItemBuilder().itemWithName(Material.PAPER, Utils.colored("&6&læŠ•ç¥¨&f&låœ°åœ–&7(Vote maps)"));
+		arrowTrails = SurvivalGames.getItemBuilder().itemWithName(Material.CHEST, Utils.colored("&f&lé¸æ“‡&e&lç®­çŸ¢ç‰¹æ•ˆ&7(Arrow trails)"));
+		RandomMap = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&eéš¨ç·£&7(Random Map)");
+		statsItem = SurvivalGames.getItemBuilder().createRandomMap(Material.SIGN, "&bç©å®¶è³‡æ–™&7(Player stats)");
 	}
 
 	public void setupList() {
 
-		zh_tw_victoryMsg.add("¡±7¡±m--------------------------");
+		zh_tw_victoryMsg.add("Â§7Â§m--------------------------");
 		zh_tw_victoryMsg.add("");
-		zh_tw_victoryMsg.add("  ¡±e¡±l¹CÀ¸µ²§ô");
-		zh_tw_victoryMsg.add("¡±f®¥³ß ¡±6¡±l<player> ¡±fÀò±o³Ó§Q");
+		zh_tw_victoryMsg.add("  Â§eÂ§léŠæˆ²çµæŸ");
+		zh_tw_victoryMsg.add("Â§fæ­å–œ Â§6Â§l<player> Â§fç²å¾—å‹åˆ©");
 		zh_tw_victoryMsg.add("");
-		zh_tw_victoryMsg.add("¡±f³Ó§QªÌÀ»±ş¼Æ:¡±b <playerKills>");
+		zh_tw_victoryMsg.add("Â§få‹åˆ©è€…æ“Šæ®ºæ•¸:Â§b <playerKills>");
 		zh_tw_victoryMsg.add("");
-		zh_tw_victoryMsg.add("¡±7¡±m--------------------------");
+		zh_tw_victoryMsg.add("Â§7Â§m--------------------------");
 
-		en_us_victoryMsg.add("¡±7¡±m--------------------------");
+		en_us_victoryMsg.add("Â§7Â§m--------------------------");
 		en_us_victoryMsg.add("");
-		en_us_victoryMsg.add("  ¡±e¡±lMatch ended");
-		en_us_victoryMsg.add("¡±fCongratulations ¡±6¡±l<player> ¡±fwins the game!");
+		en_us_victoryMsg.add("  Â§eÂ§lMatch ended");
+		en_us_victoryMsg.add("Â§fCongratulations Â§6Â§l<player> Â§fwins the game!");
 		en_us_victoryMsg.add("");
-		en_us_victoryMsg.add("¡±fWinner kills:¡±b <playerKills>");
+		en_us_victoryMsg.add("Â§fWinner kills:Â§b <playerKills>");
 		en_us_victoryMsg.add("");
-		en_us_victoryMsg.add("¡±7¡±m--------------------------");
+		en_us_victoryMsg.add("Â§7Â§m--------------------------");
 
 		zh_tw_infoMessage.add(Utils.colored("&f&m-----------------------------"));
-		zh_tw_infoMessage.add(Utils.colored("              &6&lÅwªï¨Ó¨ìMitwSG"));
-		zh_tw_infoMessage.add(Utils.colored("           &fºÉ§A©Ò¯àªº·m¨ì³Ì¦h½c¤l"));
-		zh_tw_infoMessage.add(Utils.colored("&f¥i¥Hªº¸Ü,¹Á¸Õ¨ìÁô±Kªº¦a¤è·j´M&e°ªµ¥½c"));
-		zh_tw_infoMessage.add(Utils.colored("              &c&l¨Ã¥BÀH®Éª`·N¨­®Ç"));
-		zh_tw_infoMessage.add(Utils.colored("                &a&l¥Ø¼ĞÀò±o³Ó§Q!"));
+		zh_tw_infoMessage.add(Utils.colored("              &6&læ­¡è¿ä¾†åˆ°MitwSG"));
+		zh_tw_infoMessage.add(Utils.colored("           &fç›¡ä½ æ‰€èƒ½çš„æ¶åˆ°æœ€å¤šç®±å­"));
+		zh_tw_infoMessage.add(Utils.colored("&få¯ä»¥çš„è©±,å˜—è©¦åˆ°éš±å¯†çš„åœ°æ–¹æœå°‹&eé«˜ç­‰ç®±"));
+		zh_tw_infoMessage.add(Utils.colored("              &c&lä¸¦ä¸”éš¨æ™‚æ³¨æ„èº«æ—"));
+		zh_tw_infoMessage.add(Utils.colored("                &a&lç›®æ¨™æˆç‚ºæœ€å¾Œçš„è´å®¶!"));
 		zh_tw_infoMessage.add(Utils.colored("&f&m-----------------------------"));
 
 		en_us_infoMessage.add(Utils.colored("&f&m-----------------------------"));
 		en_us_infoMessage.add(Utils.colored("              &6&lWelcome to MitwSG"));
-		en_us_infoMessage.add(Utils.colored("           &fFind a lot chest as you can"));
-		en_us_infoMessage.add(Utils.colored("  &fTry to find the hidden &eTier 2 chest"));
+		en_us_infoMessage.add(Utils.colored("           &fFind tons of chests as you can"));
+		en_us_infoMessage.add(Utils.colored("  &fTry to find the hidden &eTier 2 chests"));
 		en_us_infoMessage.add(Utils.colored("              &c&lBe careful of your surroundings"));
-		en_us_infoMessage.add(Utils.colored("                &a&lAnd won the match!"));
+		en_us_infoMessage.add(Utils.colored("                &a&lAnd become the  last survivor!"));
 		en_us_infoMessage.add(Utils.colored("&f&m-----------------------------"));
 	}
 

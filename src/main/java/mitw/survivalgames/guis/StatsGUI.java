@@ -32,7 +32,7 @@ public class StatsGUI extends MenuBuilder {
 	public void onClick(final Player p, final ItemStack i, final ItemStack[] items) {
 		if (i.getType() == Material.ENCHANTED_BOOK) {
 			if (RatingManager.getInstance().getRatingTop().isEmpty()) {
-				p.sendMessage("¡±c¼È®É¨S¦³±Æ¦æº].. (ÁÙ¨S¦³Àx¦sªº¸ê®Æ!)");
+				p.sendMessage("Â§cæš«æ™‚æ²’æœ‰æŽ’è¡Œæ¦œ.. (é‚„æ²’æœ‰å„²å­˜çš„è³‡æ–™!)");
 			}
 			p.closeInventory();
 			new TopGUI(p).o(p);

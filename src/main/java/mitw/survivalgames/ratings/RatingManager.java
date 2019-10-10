@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import lombok.Getter;
 import mitw.survivalgames.SurvivalGames;
-import net.development.mitw.utils.AsyncUtils;
 
 public class RatingManager {
 
@@ -35,7 +34,7 @@ public class RatingManager {
 	}
 
 	public void updateTops() {
-		AsyncUtils.runAsync(() -> {
+		SurvivalGames.getInstance().getServer().getScheduler().runTaskAsynchronously(SurvivalGames.getInstance(), () -> {
 			{
 				final Map<String, Integer> ratingTop = new HashMap<>();
 				database.getSqlTable().executeQuery("SELECT name, rating from " + database.getTABLE_NAME() + "")

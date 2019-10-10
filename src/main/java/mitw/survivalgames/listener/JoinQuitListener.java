@@ -16,7 +16,6 @@ import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.manager.ArenaManager;
 import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.manager.PlayerManager;
-import mitw.survivalgames.scoreboard.ScoreHelper;
 import mitw.survivalgames.tasks.LobbyTask;
 import mitw.survivalgames.utils.Utils;
 
@@ -29,28 +28,28 @@ public class JoinQuitListener implements Listener {
 		PlayerManager.createCache(p);
 		e.setJoinMessage(null);
 		switch (GameStatus.getState()) {
-		case WAITING:
-			PlayerManager.clearInventory(p);
-			PlayerManager.tpToSpawn(p);
-			PlayerManager.giveWaitingItem(p);
-			p.setGameMode(GameMode.SURVIVAL);
-			if (!isCast) {
-				Bukkit.getScheduler().runTaskLater(SurvivalGames.getInstance(), () -> {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), SurvivalGames.getFileManager().getCsettings().getString("broadCastCommand"));
-					isCast = true;
-				}, 5);
-			}
-			if (GameManager.canStart() && !GameManager.starting) {
-				GameManager.starting = true;
-				Utils.playSoundAll(Sound.NOTE_PLING);
-				new LobbyTask().runTaskTimer(SurvivalGames.getInstance(), 0, 20);
-			}
-			Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "pplJoin").replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size()))));
-			break;
-		default:
-			PlayerManager.setSpec(p);
-			PlayerManager.randomTeleportPlayer(p);
-			break;
+			case WAITING:
+				PlayerManager.clearInventory(p);
+				PlayerManager.tpToSpawn(p);
+				PlayerManager.giveWaitingItem(p);
+				p.setGameMode(GameMode.SURVIVAL);
+				if (!isCast) {
+					Bukkit.getScheduler().runTaskLater(SurvivalGames.getInstance(), () -> {
+						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), SurvivalGames.getFileManager().getCsettings().getString("broadCastCommand"));
+						isCast = true;
+					}, 5);
+				}
+				if (GameManager.canStart() && !GameManager.starting) {
+					GameManager.starting = true;
+					Utils.playSoundAll(Sound.NOTE_PLING);
+					new LobbyTask().runTaskTimer(SurvivalGames.getInstance(), 0, 20);
+				}
+				Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "pplJoin").replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size()))));
+				break;
+			default:
+				PlayerManager.setSpec(p);
+				PlayerManager.randomTeleportPlayer(p);
+				break;
 		}
 	}
 
@@ -58,61 +57,60 @@ public class JoinQuitListener implements Listener {
 	public void onLeave(final PlayerQuitEvent e) {
 		e.setQuitMessage(null);
 		final Player p = e.getPlayer();
-		ScoreHelper.removeScore(p);
 		e.setQuitMessage(null);
 		PlayerManager.saveCache(p.getUniqueId());
 		switch (GameStatus.getState()) {
-		case WAITING:
-			PlayerManager.getPlayers().remove(p.getUniqueId());
-			Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "pplLeave").replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size() - 1))));
-			if (ArenaManager.getVotes().containsKey(p.getUniqueId())) {
-				ArenaManager.getVotes().remove(p.getUniqueId());
-			}
-			if (ArenaManager.getVoteRandom().contains(p.getUniqueId())) {
-				ArenaManager.getVoteRandom().remove(p.getUniqueId());
-			}
-			if (Bukkit.getOnlinePlayers().size() - 1 <= 0F) {
-				isCast = false;
-			}
-			PlayerManager.removeCache(p.getUniqueId());
-			return;
-		case GAMING:
-			if (PlayerManager.isGameingPlayer(p)) {
-				p.setHealth(0.0);
+			case WAITING:
 				PlayerManager.getPlayers().remove(p.getUniqueId());
-				GameManager.checkWin();
-			}
-			break;
-		case STARRTING:
-			if (PlayerManager.isGameingPlayer(p)) {
-				PlayerManager.getPlayers().remove(p.getUniqueId());
-			}
-			break;
-		case DMSTARTING:
-			if (PlayerManager.isGameingPlayer(p)) {
-				p.setHealth(0.0);
-				PlayerManager.getPlayers().remove(p.getUniqueId());
-				GameManager.checkWin();
-			}
-		case DEATHMATCH:
-			if (PlayerManager.isGameingPlayer(p)) {
-				p.setHealth(0.0);
-				PlayerManager.getPlayers().remove(p.getUniqueId());
-				GameManager.checkWin();
-			}
-		default:
-			break;
+				Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(SurvivalGames.getLanguage().translate(player, "pplLeave").replaceAll("<player>", p.getName()).replaceAll("<now>", String.valueOf(Bukkit.getOnlinePlayers().size() - 1))));
+				if (ArenaManager.getVotes().containsKey(p.getUniqueId())) {
+					ArenaManager.getVotes().remove(p.getUniqueId());
+				}
+				if (ArenaManager.getVoteRandom().contains(p.getUniqueId())) {
+					ArenaManager.getVoteRandom().remove(p.getUniqueId());
+				}
+				if (Bukkit.getOnlinePlayers().size() - 1 <= 0F) {
+					isCast = false;
+				}
+				PlayerManager.removeCache(p.getUniqueId());
+				return;
+			case GAMING:
+				if (PlayerManager.isGameingPlayer(p)) {
+					p.setHealth(0.0);
+					PlayerManager.getPlayers().remove(p.getUniqueId());
+					GameManager.checkWin();
+				}
+				break;
+			case STARRTING:
+				if (PlayerManager.isGameingPlayer(p)) {
+					PlayerManager.getPlayers().remove(p.getUniqueId());
+				}
+				break;
+			case DMSTARTING:
+				if (PlayerManager.isGameingPlayer(p)) {
+					p.setHealth(0.0);
+					PlayerManager.getPlayers().remove(p.getUniqueId());
+					GameManager.checkWin();
+				}
+			case DEATHMATCH:
+				if (PlayerManager.isGameingPlayer(p)) {
+					p.setHealth(0.0);
+					PlayerManager.getPlayers().remove(p.getUniqueId());
+					GameManager.checkWin();
+				}
+			default:
+				break;
 		}
 	}
 
 	@EventHandler
 	public void onLogin(final PlayerLoginEvent e) {
 		if (GameStatus.isWaiting() && GameManager.isFull()) {
-			e.disallow(Result.KICK_WHITELIST, Utils.colored("&c¹CÀ¸º¡¤H¤F!!"));
+			e.disallow(Result.KICK_WHITELIST, Utils.colored("&céŠæˆ²æ»¿äººäº†!!"));
 		} else if (GameStatus.isStarting()) {
-			e.disallow(Result.KICK_WHITELIST, Utils.colored("&c¹CÀ¸¥¿¦b¶Ç°e¤¤,½Ðµyµ¥¦A¥[¤JÆ[¾Ô"));
+			e.disallow(Result.KICK_WHITELIST, Utils.colored("&céŠæˆ²æ­£åœ¨å‚³é€ä¸­,è«‹ç¨ç­‰å†åŠ å…¥è§€æˆ°"));
 		} else if (GameStatus.isFinished()) {
-			e.disallow(Result.KICK_WHITELIST, Utils.colored("&c¹CÀ¸µ²§ô¤F!µ¥µ¥¦A¥[¤J¹Cª±§a!"));
+			e.disallow(Result.KICK_WHITELIST, Utils.colored("&céŠæˆ²çµæŸäº†!ç­‰ç­‰å†åŠ å…¥éŠçŽ©å§!"));
 		}
 
 	}

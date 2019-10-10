@@ -9,7 +9,7 @@
 	<description>Survival Games</description>
 
 	<properties>
-		<project.build.sourceEncoding>MS950</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<mainClass>mitw.survivalgames.SurvivalGames</mainClass>
@@ -70,9 +70,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>top.potl</groupId>
-			<artifactId>nspigot</artifactId>
-			<version>2.0E</version>
+			<groupId>spg.lgdev</groupId>
+			<artifactId>ispigot</artifactId>
+			<version>1.8.8-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		

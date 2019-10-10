@@ -34,33 +34,33 @@ public class SurvivalGamesCommand extends BukkitCommand {
 		final Player p = (Player) sender;
 		switch (args[0].toLowerCase()) {
 
-		case "setlobby":
-			PlayerManager.setSpawnLocation(p.getLocation());
-			SurvivalGames.getFileManager().getClocation().set("Lobby", Utils.locToStrPitch(p.getLocation()));
-			SurvivalGames.getFileManager().saveLocationConfig();
-			p.sendMessage(Utils.colored("&a¦¨¥\³]©w­«¥ÍÂI"));
-			break;
-		case "clearmap":
-			final World w = p.getWorld();
-			EntityType et;
-			int clearCount = 0;
-			for (final Entity e : w.getEntities()) {
-				et = e.getType();
-				if (et.equals(EntityType.ITEM_FRAME) || et.equals(EntityType.PAINTING) || et.equals(EntityType.PLAYER)
-						|| et.equals(EntityType.MINECART_HOPPER))
-					continue;
-				else {
-					e.remove();
-					clearCount++;
-				}
+			case "setlobby":
+				PlayerManager.setSpawnLocation(p.getLocation());
+				SurvivalGames.getFileManager().getClocation().set("Lobby", Utils.locToStrPitch(p.getLocation()));
+				SurvivalGames.getFileManager().saveLocationConfig();
+				p.sendMessage(Utils.colored("&aæˆåŠŸè¨­å®šé‡ç”Ÿé»"));
+				break;
+			case "clearmap":
+				final World w = p.getWorld();
+				EntityType et;
+				int clearCount = 0;
+				for (final Entity e : w.getEntities()) {
+					et = e.getType();
+					if (et.equals(EntityType.ITEM_FRAME) || et.equals(EntityType.PAINTING) || et.equals(EntityType.PLAYER)
+							|| et.equals(EntityType.MINECART_HOPPER))
+						continue;
+					else {
+						e.remove();
+						clearCount++;
+					}
 
-			}
-			p.sendMessage(Utils.colored("&a¦¨¥\²M°£ " + clearCount + " ­Ó¥Íª«"));
-			break;
+				}
+				p.sendMessage(Utils.colored("&aæˆåŠŸæ¸…é™¤ " + clearCount + " å€‹ç”Ÿç‰©"));
+				break;
 			/*case "nextt2":
 			arenasName = args[1];
 			if (SurvivalGames.getArenaManager().getArena(arenasName) == null) {
-				p.sendMessage("¦¹³õ¦a¤£¦s¦b");
+				p.sendMessage("æ­¤å ´åœ°ä¸å­˜åœ¨");
 				return false;
 			}
 			a = SurvivalGames.getArenaManager().getArena(arenasName);
@@ -70,16 +70,16 @@ public class SurvivalGamesCommand extends BukkitCommand {
 				tir2PointRound = 0;
 			System.out.println(tir2PointRound);
 			break;*/
-		case "builder":
-			final UUID u = p.getUniqueId();
-			if (PlayerManager.getBuilders().contains(u)) {
-				PlayerManager.getBuilders().remove(u);
-				p.sendMessage(Utils.colored("&e«Ø¿v¼Ò¦¡:&c Ãö³¬"));
+			case "builder":
+				final UUID u = p.getUniqueId();
+				if (PlayerManager.getBuilders().contains(u)) {
+					PlayerManager.getBuilders().remove(u);
+					p.sendMessage(Utils.colored("&eå»ºç¯‰æ¨¡å¼:&c é—œé–‰"));
+					break;
+				}
+				PlayerManager.getBuilders().add(u);
+				p.sendMessage(Utils.colored("&eå»ºç¯‰æ¨¡å¼:&a é–‹å•Ÿ"));
 				break;
-			}
-			PlayerManager.getBuilders().add(u);
-			p.sendMessage(Utils.colored("&e«Ø¿v¼Ò¦¡:&a ¶}±Ò"));
-			break;
 			/*case "autodetectchest":
 			final Location loc = p.getLocation();
 			final World wo = p.getWorld();

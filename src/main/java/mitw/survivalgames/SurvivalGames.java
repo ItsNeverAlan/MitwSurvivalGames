@@ -3,6 +3,9 @@ package mitw.survivalgames;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import mitw.survivalgames.handler.SGMovementHandler;
+import mitw.survivalgames.scoreboard.Frame;
+import mitw.survivalgames.scoreboard.adapter.SurvivalGameAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -23,7 +26,6 @@ import mitw.survivalgames.manager.GameManager;
 import mitw.survivalgames.manager.PlayerManager;
 import mitw.survivalgames.manager.SgChestManager;
 import mitw.survivalgames.ratings.RatingManager;
-import mitw.survivalgames.scoreboard.BoardSetup;
 import mitw.survivalgames.utils.FastRandom;
 import mitw.survivalgames.utils.ItemBuilder;
 import mitw.survivalgames.utils.Utils;
@@ -64,8 +66,10 @@ public class SurvivalGames extends JavaPlugin {
 		registerCommands();
 		registerEvents();
 
+		SGMovementHandler.register();
+
 		getArenaManager().setupGameRule();
-		BoardSetup.setup();
+		new Frame(this, new SurvivalGameAdapter());
 
 	}
 

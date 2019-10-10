@@ -20,7 +20,7 @@ public class ArenaCommand extends StaffCommands {
 		super("arena");
 	}
 
-	private final String nullArena = "&c¦¹³õ¦a¤£¦s¦b";
+	private final String nullArena = "&cæ­¤å ´åœ°ä¸å­˜åœ¨";
 
 	@Override
 	public void run(Player p, String[] args) {
@@ -30,62 +30,62 @@ public class ArenaCommand extends StaffCommands {
 		}
 		Arena ar;
 		switch (args[0].toLowerCase()) {
-		case "create":
-			checkArgsLengh(2, "&f¨Ï¥Î¤èªk: &7/arena create <³õ¦a¦WºÙ>");
-			final String name = args[1];
-			ar = ArenaManager.getArena(name);
-			if (ar != null) {
-				ArenaManager.loadArena(ar);
+			case "create":
+				checkArgsLengh(2, "&fä½¿ç”¨æ–¹æ³•: &7/arena create <å ´åœ°åç¨±>");
+				final String name = args[1];
+				ar = ArenaManager.getArena(name);
+				if (ar != null) {
+					ArenaManager.loadArena(ar);
+					p.teleport(ar.getCenter());
+					returnTell("&eå ´åœ°å·²ç¶“å­˜åœ¨!å› æ­¤å°‡æ‚¨å‚³é€è‡³æ­¤å ´åœ°!");
+				}
+				ArenaManager.createNewArena(name);
+				ar = ArenaManager.getArena(name);
 				p.teleport(ar.getCenter());
-				returnTell("&e³õ¦a¤w¸g¦s¦b!¦]¦¹±N±z¶Ç°e¦Ü¦¹³õ¦a!");
-			}
-			ArenaManager.createNewArena(name);
-			ar = ArenaManager.getArena(name);
-			p.teleport(ar.getCenter());
-			tell("&a³õ¦a³Ğ«Ø§¹¦¨!,³õ¦a¤¤¤ßÂI¹w³]¬°±zªº­«¥ÍÂI,¦p¦³»İ½Ğ¨Ï¥Î&f/sg setcenter&a¨Ó¦Û¦æ¨M©w¤¤¤ßÂI!");
-			break;
-		case "remove":
+				tell("&aå ´åœ°å‰µå»ºå®Œæˆ!,å ´åœ°ä¸­å¿ƒé»é è¨­ç‚ºæ‚¨çš„é‡ç”Ÿé»,å¦‚æœ‰éœ€è«‹ä½¿ç”¨&f/sg setcenter&aä¾†è‡ªè¡Œæ±ºå®šä¸­å¿ƒé»!");
+				break;
+			case "remove":
 
-			break;
-		case "setdisplayname":
-			checkArgsLengh(3, "&f¨Ï¥Î¤èªk: &7/arena setdisplayname <³õ¦a¦WºÙ> <¦WºÙ>");
-			checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
-			ar.setDisplayName(args[2]);
-			ar.saveDisplayName();
-			tell("&a¦¨¥\³]©w " + ar.getName() + " ³õ¦aªºÅã¥Ü¦WºÙ¬° " + ar.getDisplayName());
-			break;
-		case "tp":
-			checkArgsLengh(2, "&f¨Ï¥Î¤èªk: &7/arena tp <³õ¦a¦WºÙ>");
-			checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
-			if (Bukkit.getWorld(ar.getName()) == null)
-				ArenaManager.loadArena(ar);
-			p.teleport(ar.getCenter());
-			tell("&a¦¨¥\¶Ç°e¦Ü " + ar.getName());
-			break;
-		case "addspawn":
-			checkArgsLengh(2, "&f¨Ï¥Î¤èªk: &7/arena addspawn <³õ¦a¦WºÙ>");
-			checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
-			ar.addSpawn(p.getLocation());
-			ar.saveSpawns();
-			tell("&a¦¨¥\·s¼W­«¥ÍÂI,¥Ø«e¦@¦³&f " + ar.getSpawnPoints().size() + " &a­Ó­«¥ÍÂI¤w¸g³Q³]©w");
-			break;
-		case "setcenter":
-			checkArgsLengh(2, "&f¨Ï¥Î¤èªk: &7/arena addspawn <³õ¦a¦WºÙ>");
-			checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
-			ar.setCenter(p.getLocation());
-			ar.saveCenter();
-			tell("&a¦¨¥\³]©w¤¤¤ßÂI!");
-			break;
-		case "addt2":
-			checkArgsLengh(2, "&f¨Ï¥Î¤èªk: &7/arena addt2 <³õ¦a¦WºÙ>");
-			checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
-			ArenaManager.getEditors().put(p.getUniqueId(), ar);
-			PlayerManager.giveSetChestItem(p, ar.getName());
-			p.sendMessage(Utils.colored("&e§A¦¨¥\Àò±o½s¿è " + ar.getName() + " °ªµ¥½c¤lªº±ÂÅv!"));
-			break;
-		default:
-			help();
-			break;
+				break;
+			case "setdisplayname":
+				checkArgsLengh(3, "&fä½¿ç”¨æ–¹æ³•: &7/arena setdisplayname <å ´åœ°åç¨±> <åç¨±>");
+				checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
+				ar.setDisplayName(args[2]);
+				ar.saveDisplayName();
+				tell("&aæˆåŠŸè¨­å®š " + ar.getName() + " å ´åœ°çš„é¡¯ç¤ºåç¨±ç‚º " + ar.getDisplayName());
+				break;
+			case "tp":
+				checkArgsLengh(2, "&fä½¿ç”¨æ–¹æ³•: &7/arena tp <å ´åœ°åç¨±>");
+				checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
+				if (Bukkit.getWorld(ar.getName()) == null)
+					ArenaManager.loadArena(ar);
+				p.teleport(ar.getCenter());
+				tell("&aæˆåŠŸå‚³é€è‡³ " + ar.getName());
+				break;
+			case "addspawn":
+				checkArgsLengh(2, "&fä½¿ç”¨æ–¹æ³•: &7/arena addspawn <å ´åœ°åç¨±>");
+				checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
+				ar.addSpawn(p.getLocation());
+				ar.saveSpawns();
+				tell("&aæˆåŠŸæ–°å¢é‡ç”Ÿé»,ç›®å‰å…±æœ‰&f " + ar.getSpawnPoints().size() + " &aå€‹é‡ç”Ÿé»å·²ç¶“è¢«è¨­å®š");
+				break;
+			case "setcenter":
+				checkArgsLengh(2, "&fä½¿ç”¨æ–¹æ³•: &7/arena addspawn <å ´åœ°åç¨±>");
+				checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
+				ar.setCenter(p.getLocation());
+				ar.saveCenter();
+				tell("&aæˆåŠŸè¨­å®šä¸­å¿ƒé»!");
+				break;
+			case "addt2":
+				checkArgsLengh(2, "&fä½¿ç”¨æ–¹æ³•: &7/arena addt2 <å ´åœ°åç¨±>");
+				checkNull(ar = ArenaManager.getArena(args[1]), nullArena);
+				ArenaManager.getEditors().put(p.getUniqueId(), ar);
+				PlayerManager.giveSetChestItem(p, ar.getName());
+				p.sendMessage(Utils.colored("&eä½ æˆåŠŸç²å¾—ç·¨è¼¯ " + ar.getName() + " é«˜ç­‰ç®±å­çš„æˆæ¬Š!"));
+				break;
+			default:
+				help();
+				break;
 		}
 	}
 
@@ -93,12 +93,12 @@ public class ArenaCommand extends StaffCommands {
 		Common.tell(p,
 				"&8&m-----------------&6&lMitw&f&lSG&8&m-----------------",
 				"",
-				"&7/arena create <³õ¦a¦WºÙ>",
-				"&7/arena tp <³õ¦a¦WºÙ>",
-				"&7/arena addt2 <³õ¦a¦WºÙ>",
-				"&7/arena addspawn <³õ¦a¦WºÙ>",
-				"&7/arena setcenter <³õ¦a¦WºÙ>",
-				"&7/arena setdisplayname <³õ¦a¦WºÙ> <¦WºÙ>",
+				"&7/arena create <å ´åœ°åç¨±>",
+				"&7/arena tp <å ´åœ°åç¨±>",
+				"&7/arena addt2 <å ´åœ°åç¨±>",
+				"&7/arena addspawn <å ´åœ°åç¨±>",
+				"&7/arena setcenter <å ´åœ°åç¨±>",
+				"&7/arena setdisplayname <å ´åœ°åç¨±> <åç¨±>",
 				"",
 				"&8&m---------------------------------------");
 	}

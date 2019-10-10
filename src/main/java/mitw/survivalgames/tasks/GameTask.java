@@ -1,6 +1,7 @@
 package mitw.survivalgames.tasks;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -31,7 +32,7 @@ public class GameTask extends BukkitRunnable
 			Utils.playSoundAll(Sound.NOTE_PLING);
 			Bukkit.getOnlinePlayers()
 			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "gameCount")
-					.replaceAll("<time>", String.valueOf(timeLeft) + " ¡±c" +
+					.replaceAll("<time>", String.valueOf(timeLeft) + " Â§c" +
 							SurvivalGames.getLanguage().translate(pl, "seconds"))));
 			return;
 		}
@@ -39,7 +40,7 @@ public class GameTask extends BukkitRunnable
 			Utils.playSoundAll(Sound.NOTE_PLING);
 			Bukkit.getOnlinePlayers()
 			.forEach(pl -> pl.sendMessage(SurvivalGames.getLanguage().translate(pl, "gameCount")
-					.replaceAll("<time>", String.valueOf(timeLeft / 60) + " ¡±c" +
+					.replaceAll("<time>", String.valueOf(timeLeft / 60) + " Â§c" +
 							SurvivalGames.getLanguage().translate(pl, "minutes"))));
 			return;
 		}

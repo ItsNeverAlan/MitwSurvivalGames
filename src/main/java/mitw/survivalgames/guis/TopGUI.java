@@ -28,7 +28,7 @@ public class TopGUI extends MenuBuilder {
 			if (i > 10) {
 				break;
 			}
-			itemBuilder.lore("¡±e" + i + ") " + name + " ¡±7- " + Rank.getRank(top.get(name)).getIcon() + top.get(name));
+			itemBuilder.lore("Â§e" + i + ") " + name + " Â§7- " + Rank.getRank(top.get(name)).getIcon() + top.get(name));
 			i++;
 		}
 
@@ -41,7 +41,7 @@ public class TopGUI extends MenuBuilder {
 
 		i = 1;
 		for (final String name : top.keySet()) {
-			itemBuilder.lore("¡±e" + i + ") " + name + " ¡±7- ¡±6" + top.get(name));
+			itemBuilder.lore("Â§e" + i + ") " + name + " Â§7- Â§6" + top.get(name));
 			i++;
 		}
 
@@ -54,7 +54,7 @@ public class TopGUI extends MenuBuilder {
 
 		i = 1;
 		for (final String name : top.keySet()) {
-			itemBuilder.lore("¡±e" + i + ") " + name + " ¡±7- ¡±6" + top.get(name));
+			itemBuilder.lore("Â§e" + i + ") " + name + " Â§7- Â§6" + top.get(name));
 			i++;
 		}
 
@@ -67,7 +67,7 @@ public class TopGUI extends MenuBuilder {
 
 		i = 1;
 		for (final String name : top2.keySet()) {
-			itemBuilder.lore("¡±e" + i + ") " + name + " ¡±7- ¡±6" + PlayerCache.format.format(top2.get(name)));
+			itemBuilder.lore("Â§e" + i + ") " + name + " Â§7- Â§6" + PlayerCache.format.format(top2.get(name)));
 			i++;
 		}
 

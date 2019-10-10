@@ -1,6 +1,7 @@
 package mitw.survivalgames.ratings;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import lombok.Getter;
@@ -38,7 +39,7 @@ public class RatingDatabase {
 				.addColumn(new SQLColumn(SQLColumnType.INT, "rating", 1000));
 
 		sqlTable.executeUpdate(sqlTable.createQuery()).dataSource(database.getDataSource()).run();
-		Bukkit.getConsoleSender().sendMessage("¡±aSurvivalGames database connected");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "SurvivalGames database connected");
 	}
 
 	public PlayerCache createCache(final Player player) {
@@ -51,26 +52,26 @@ public class RatingDatabase {
 
 		if (hasData(player)) {
 			sqlTable.executeSelect("uuid = ?")
-			.dataSource(database.getDataSource())
-			.statement(s -> s.setString(1, FastUUID.toString(player.getUniqueId())))
-			.resultNext(r -> {
-				playerCache.setWins(r.getInt("wins"));
-				playerCache.setKills(r.getInt("kills"));
-				playerCache.setDeaths(r.getInt("deaths"));
-				playerCache.setRating(r.getInt("rating"));
-				return null;
-			}).run();
+					.dataSource(database.getDataSource())
+					.statement(s -> s.setString(1, FastUUID.toString(player.getUniqueId())))
+					.resultNext(r -> {
+						playerCache.setWins(r.getInt("wins"));
+						playerCache.setKills(r.getInt("kills"));
+						playerCache.setDeaths(r.getInt("deaths"));
+						playerCache.setRating(r.getInt("rating"));
+						return null;
+					}).run();
 		} else {
 			sqlTable.executeInsert("?, ?, ?, ?, ?, ?")
-			.dataSource(database.getDataSource())
-			.statement(s -> {
-				s.setString(1, FastUUID.toString(player.getUniqueId()));
-				s.setString(2, player.getName());
-				s.setInt(3, 0);
-				s.setInt(4, 0);
-				s.setInt(5, 0);
-				s.setInt(6, 1000);
-			}).run();
+					.dataSource(database.getDataSource())
+					.statement(s -> {
+						s.setString(1, FastUUID.toString(player.getUniqueId()));
+						s.setString(2, player.getName());
+						s.setInt(3, 0);
+						s.setInt(4, 0);
+						s.setInt(5, 0);
+						s.setInt(6, 1000);
+					}).run();
 			playerCache.setRating(1000);
 		}
 
@@ -92,15 +93,15 @@ public class RatingDatabase {
 
 	public void savePlayerCache(final PlayerCache playerCache) {
 		sqlTable.executeUpdate("UPDATE `" + TABLE_NAME + "` SET `name` = ?, `wins` = ?, `kills` = ?, `deaths` = ?, `rating` = ? WHERE `uuid` = ?;")
-		.dataSource(database.getDataSource())
-		.statement(s -> {
-			s.setString(1,UUIDCache.getName(playerCache.getUuid()));
-			s.setInt(2, playerCache.getWins());
-			s.setInt(3, playerCache.getKills());
-			s.setInt(4, playerCache.getDeaths());
-			s.setInt(5, playerCache.getRating());
-			s.setString(6, FastUUID.toString(playerCache.getUuid()));
-		}).run();
+				.dataSource(database.getDataSource())
+				.statement(s -> {
+					s.setString(1,UUIDCache.getName(playerCache.getUuid()));
+					s.setInt(2, playerCache.getWins());
+					s.setInt(3, playerCache.getKills());
+					s.setInt(4, playerCache.getDeaths());
+					s.setInt(5, playerCache.getRating());
+					s.setString(6, FastUUID.toString(playerCache.getUuid()));
+				}).run();
 	}
 
 	public boolean hasData(final Player player) {

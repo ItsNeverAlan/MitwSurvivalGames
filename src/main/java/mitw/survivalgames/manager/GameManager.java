@@ -22,7 +22,6 @@ import mitw.survivalgames.Lang;
 import mitw.survivalgames.SurvivalGames;
 import mitw.survivalgames.arena.Arena;
 import mitw.survivalgames.ratings.PlayerCache;
-import mitw.survivalgames.scoreboard.BoardSetup;
 import mitw.survivalgames.tasks.DmStartTask;
 import mitw.survivalgames.tasks.FireworkTask;
 import mitw.survivalgames.tasks.GameTask;
@@ -51,12 +50,15 @@ public class GameManager {
 		getDeathMatch();
 	}
 
+	public static String winnerName;
+	public static String winnerKills;
+
 	public static void getWinner() {
 		if (!(PlayerManager.getPlayers().size() < 2))
 			return;
 
-		BoardSetup.winnerName = UUIDCache.getName(PlayerManager.getPlayers().get(0));
-		BoardSetup.winnerKills = PlayerManager.getKills(PlayerManager.getPlayers().get(0)) + "";
+		winnerName = UUIDCache.getName(PlayerManager.getPlayers().get(0));
+		winnerKills = PlayerManager.getKills(PlayerManager.getPlayers().get(0)) + "";
 		GameStatus.setState(GameStatus.FINISH);
 		if (!PlayerManager.getPlayers().isEmpty()) {
 			final Player winner = Bukkit.getPlayer(PlayerManager.getPlayers().get(0));
@@ -117,7 +119,6 @@ public class GameManager {
 	public static void startDeathMatch() {
 		GameStatus.setState(GameStatus.DMSTARTING);
 		teleportDeathMatch();
-		BoardSetup.setTitile(Utils.colored(Lang.deathMatchTitle));
 		new DmStartTask().runTaskTimer(SurvivalGames.getInstance(), 0, 20);
 	}
 
@@ -251,7 +252,6 @@ public class GameManager {
 	}
 
 	private static void victoryDance(final Player p) {
-		/* 播放聲音 + 訊息*/
 		Bukkit.getOnlinePlayers().forEach(pl -> SurvivalGames.getLanguage().translateArrays(pl, "victoryMsg").forEach(msg -> pl.sendMessage(
 				msg.replaceAll("<player>", p.getName()).replaceAll("<playerKills>", "" + PlayerManager.getKills(p)))));
 
