@@ -21,7 +21,7 @@ public class SGMovementHandler {
                         return;
                     if ((GameStatus.isStarting() || GameStatus.isDmStarting()) && PlayerManager.getPlayers().contains(p.getUniqueId())) {
                         Location from = movementValues.getFrom();
-                        p.teleport(new Location(from.getWorld(), from.getBlockX(), from.getY(), from.getBlockZ()));
+                        p.teleport(new Location(from.getWorld(), from.getBlockX() + 0.5f, from.getY(), from.getBlockZ() + 0.5f, p.getLocation().getYaw(), p.getLocation().getPitch()));
                     }
                 }).start();
     }

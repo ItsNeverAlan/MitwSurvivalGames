@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import net.development.mitw.utils.LobbiesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -92,7 +93,7 @@ public class GameManager {
 				}
 				final Player p = players.remove(0);
 				if (p != null) {
-					sendToLobbyServer(p);
+					LobbiesUtil.sendToLobby(p);
 				}
 			}
 		}.runTaskTimer(SurvivalGames.getInstance(), 0L, 2L);
@@ -196,19 +197,6 @@ public class GameManager {
 			}
 			run += addPoint;
 		}
-	}
-
-	public static void sendToLobbyServer(final Player p) {
-
-		final String server = "waiting";
-
-		final ByteArrayDataOutput out = ByteStreams.newDataOutput();
-
-		out.writeUTF("Connect");
-		out.writeUTF(server);
-
-		p.sendPluginMessage(SurvivalGames.getInstance(), "BungeeCord", out.toByteArray());
-
 	}
 
 	public static void sendKilltop() {

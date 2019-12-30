@@ -3,6 +3,7 @@ package mitw.survivalgames.listener;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
+import net.development.mitw.utils.LobbiesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -75,6 +76,9 @@ public class PlayerListener implements Listener {
 				.replaceAll("<player>", p.getName())
 				.replaceAll("<size>", String.valueOf(PlayerManager.getPlayers().size()))));
 		GameManager.checkWin();
+
+		e.getDrops().forEach(i -> p.getWorld().dropItemNaturally(p.getLocation(), i));
+		e.getDrops().clear();
 	}
 
 	@EventHandler
@@ -168,7 +172,7 @@ public class PlayerListener implements Listener {
 			}
 			if (i.equals(Lang.returnToLobby)) {
 				e.setCancelled(true);
-				GameManager.sendToLobbyServer(p);
+				LobbiesUtil.sendToLobby(p);
 				return;
 			}
 			if (i.equals(Lang.arrowTrails)) {

@@ -133,8 +133,9 @@ public class PlayerManager {
 
 	public static void hidePlayer(final Player p) {
 		for (final Player p2 : Bukkit.getOnlinePlayers()) {
-			if (p == p2)
-				return;
+			if (p == p2) {
+				continue;
+			}
 			p2.hidePlayer(p);
 			if (!isGameingPlayer(p2)) {
 				p.hidePlayer(p2);
